@@ -45,11 +45,16 @@ export function ContactInfo() {
           className={`fade-in-from-bottom ${getDelayClass(3)} flex items-center gap-3`}
         >
           <Mail className='h-5 w-5 shrink-0 text-muted-foreground' />
-          <div>
+          <div className='flex flex-row gap-1'>
             <Text variant='label' size='sm'>
-              Email
+              Email:
             </Text>
-            <Text>doncookbc@yahoo.ca</Text>
+            <a
+              href='mailto:doncookbc@yahoo.ca'
+              className='text-sm underline transition-colors hover:text-foreground'
+            >
+              doncookbc@yahoo.ca
+            </a>
           </div>
         </div>
 

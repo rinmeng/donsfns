@@ -59,14 +59,14 @@ export function SiteFooter() {
               Contact
             </Text>
             <Text size='sm' variant='muted'>
-              Phone: [PHONE]
+              (250) 306-5064
             </Text>
-            <Text size='sm' variant='muted'>
-              Email: [EMAIL]
-            </Text>
-            <Text size='sm' variant='muted'>
-              Service Areas: [SERVICE_AREAS]
-            </Text>
+            <a
+              href='mailto:doncookbc@yahoo.ca'
+              className='text-sm text-muted-foreground underline transition-colors hover:text-foreground'
+            >
+              doncookbc@yahoo.ca
+            </a>
           </div>
         </div>
 
