@@ -147,7 +147,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider attribute='class' defaultTheme='light' enableSystem>
           <ToastProvider>
             <Navbar />
-            <main>{children}</main>
+            <main className='overflow-x-hidden'>{children}</main>
             <SiteFooter />
             <Toaster />
             <Analytics />

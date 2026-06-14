@@ -31,7 +31,8 @@ export function SiteFooter() {
               </span>
             </Link>
             <Text size='sm' variant='muted' className='max-w-xs'>
-              If you don't have Don's fences, you don't have a fence.
+              If you don't have <span className='font-bold'>Don's Fences</span>, you don't
+              have a fence.
             </Text>
             <Text size='sm' variant='muted'>
               Enderby, BC · Serving the Okanagan
@@ -63,7 +64,8 @@ export function SiteFooter() {
             </Text>
             <a
               href='mailto:doncookbc@yahoo.ca'
-              className='text-sm text-muted-foreground underline transition-colors hover:text-foreground'
+              className='text-sm text-muted-foreground underline transition-colors
+                hover:text-foreground'
             >
               doncookbc@yahoo.ca
             </a>
