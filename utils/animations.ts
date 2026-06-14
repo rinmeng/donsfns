@@ -6,7 +6,6 @@ export const getDelayClass = (index: number) => {
     'delay-[300ms]',
     'delay-[400ms]',
     'delay-[500ms]',
-    'delay-[500ms]',
     'delay-[600ms]',
     'delay-[700ms]',
     'delay-[800ms]',

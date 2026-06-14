@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import { GalleryGrid } from '@/components/gallery/GalleryGrid';
 import { Text } from '@/components/Text';
+import { getDelayClass } from '@/utils/animations';
 
 export const metadata: Metadata = {
   title: "Gallery | Don's Fences & Services — BC Fencing Contractor",
@@ -13,10 +14,17 @@ export default function GalleryPage() {
   return (
     <div className='mx-auto max-w-7xl px-4 pb-16 pt-28 sm:px-6 lg:px-8'>
       <div className='mb-10'>
-        <Text variant='hd-xxl' className='font-display tracking-wide'>
+        <Text
+          variant='hd-xxl'
+          className={`font-display tracking-wide fade-in-from-bottom ${getDelayClass(1)}`}
+        >
           Gallery
         </Text>
-        <Text variant='muted' size='lg' className='mt-2 max-w-xl'>
+        <Text
+          variant='muted'
+          size='lg'
+          className={`mt-2 max-w-xl fade-in-from-bottom ${getDelayClass(2)}`}
+        >
           Work done across Enderby, Vernon, Armstrong, Salmon Arm, and the BC interior.
         </Text>
       </div>

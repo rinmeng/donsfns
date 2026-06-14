@@ -1,50 +1,37 @@
-import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
-import { z } from 'zod';
-
 import { buildConfirmationHtml, buildEmailHtml } from '@/lib/email';
-
-const schema = z.object({
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  email: z.email(),
-  phone: z.string().optional(),
-  service: z.string().min(1),
-  message: z.string().optional(),
-});
+import { Resend } from 'resend';
 
 export async function POST(req: Request) {
+  const resend = new Resend(process.env.RESEND_API_KEY || '');
+  const FROM_EMAIL = process.env.FROM_EMAIL || 'donsfences@web8th.com';
+  const TO_EMAIL = process.env.CONTACT_EMAIL || 'doncookbc@yahoo.ca';
+
   const body = await req.json();
-  const parsed = schema.safeParse(body);
+  const { firstName, lastName, email, phone, service, message } = body;
 
-  if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid form data' }, { status: 400 });
+  try {
+    await Promise.all([
+      resend.emails.send({
+        from: `Don's Fences & Services <${FROM_EMAIL}>`,
+        to: TO_EMAIL,
+        replyTo: email,
+        subject: `New inquiry from ${firstName} ${lastName} — ${service}`,
+        html: buildEmailHtml({ firstName, lastName, email, phone, service, message }),
+      }),
+      resend.emails.send({
+        from: `Don's Fences & Services <${FROM_EMAIL}>`,
+        to: email,
+        subject: `We got your message — Don's Fences & Services`,
+        html: buildConfirmationHtml({ firstName }),
+      }),
+    ]);
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return Response.json(
+      { success: false, error: 'Failed to send email' },
+      { status: 500 }
+    );
   }
 
-  const { firstName, lastName, email, phone, service, message } = parsed.data;
-
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json({ error: 'Email service not configured' }, { status: 503 });
-  }
-
-  const resend = new Resend(apiKey);
-  const from = process.env.FROM_EMAIL ?? 'noreply@donsfences.ca';
-  const to = process.env.CONTACT_EMAIL ?? '';
-
-  await resend.emails.send({
-    from,
-    to: [to],
-    subject: `New inquiry from ${firstName} ${lastName} — ${service}`,
-    html: buildEmailHtml({ firstName, lastName, email, phone, service, message }),
-  });
-
-  await resend.emails.send({
-    from,
-    to: [email],
-    subject: `Got your message — Don's Fences & Services`,
-    html: buildConfirmationHtml({ firstName }),
-  });
-
-  return NextResponse.json({ success: true });
+  return Response.json({ success: true }, { status: 200 });
 }

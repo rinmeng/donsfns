@@ -5,6 +5,7 @@ import { CheckCircle } from 'lucide-react';
 import { Text } from '@/components/Text';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { getDelayClass } from '@/utils/animations';
 
 const fenceTypes = [
   'Ranch & Farm Fencing',
@@ -30,11 +31,21 @@ export function FencingSection() {
       <div className='grid grid-cols-1 items-center gap-12 lg:grid-cols-2'>
         <div className='flex flex-col gap-6'>
           <div>
-            <Badge className='mb-4'>Flagship Service</Badge>
-            <Text variant='hd-xxl' className='font-display mb-4 tracking-wide'>
+            <Badge className={`fade-in-from-bottom mb-4 ${getDelayClass(1)}`}>
+              Flagship Service
+            </Badge>
+            <Text
+              variant='hd-xxl'
+              className={`fade-in-from-bottom ${getDelayClass(2)} mb-4 font-display
+                tracking-wide`}
+            >
               Fencing & Gates
             </Text>
-            <Text size='lg' variant='muted'>
+            <Text
+              size='lg'
+              variant='muted'
+              className={`fade-in-from-bottom ${getDelayClass(3)}`}
+            >
               From a single residential gate to kilometres of highway barrier — if it
               needs a fence, I build it right. Based in Enderby, BC, serving the entire
               interior.
@@ -42,15 +53,19 @@ export function FencingSection() {
           </div>
 
           <div className='flex flex-col gap-2'>
-            {highlights.map((h) => (
-              <div key={h} className='flex items-center gap-2'>
+            {highlights.map((h, index) => (
+              <div
+                key={h}
+                className={`fade-in-from-bottom flex items-center gap-2
+                ${getDelayClass(index + 4)}`}
+              >
                 <CheckCircle className='h-4 w-4 shrink-0 text-primary' />
                 <Text size='sm'>{h}</Text>
               </div>
             ))}
           </div>
 
-          <div className='flex flex-wrap gap-2'>
+          <div className={`fade-in-up ${getDelayClass(8)} flex flex-wrap gap-2`}>
             {fenceTypes.map((type) => (
               <Badge key={type} variant='secondary'>
                 {type}
@@ -58,12 +73,18 @@ export function FencingSection() {
             ))}
           </div>
 
-          <Button asChild className='self-start'>
+          <Button
+            asChild
+            className={`fade-in-from-bottom ${getDelayClass(9)} self-start`}
+          >
             <Link href='/contact'>Get a Quote</Link>
           </Button>
         </div>
 
-        <div className='relative h-[480px] overflow-hidden rounded-lg'>
+        <div
+          className={`fade-in-editorial ${getDelayClass(2)} relative h-[480px]
+            overflow-hidden rounded-lg`}
+        >
           <Image
             src='/don_4.jpg'
             alt="Professional fence installation by Don's Fences & Services"

@@ -1,8 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { ArrowRight, Quote } from 'lucide-react';
 
 import { Text } from '@/components/Text';
 import { Button } from '@/components/ui/button';
+import { getDelayClass } from '@/utils/animations';
 
 export function HeroSection() {
   return (
@@ -21,15 +23,16 @@ export function HeroSection() {
           as='p'
           variant='default'
           size='sm'
-          className='mb-4 uppercase tracking-[0.25em] text-white/70'
+          className={`fade-in-from-bottom ${getDelayClass(0)} mb-4 uppercase font-mono
+            font-bold tracking-[0.25em] text-white/70`}
         >
           Enderby, BC · Est. 12+ Years
         </Text>
 
         <Text
           variant='hd-xxl'
-          className='font-display mb-6 leading-none tracking-wide text-white text-5xl
-            md:text-7xl lg:text-9xl'
+          className={`fade-in-from-bottom ${getDelayClass(2)} font-display mb-6
+            leading-none tracking-wide text-white text-6xl md:text-7xl lg:text-9xl`}
         >
           Don's Fences
           <br />& Services
@@ -39,17 +42,31 @@ export function HeroSection() {
           as='p'
           variant='default'
           size='xl'
-          className='mx-auto mb-10 max-w-2xl italic leading-relaxed text-white/90'
+          className={`fade-in-from-bottom ${getDelayClass(4)} mx-auto mb-6 max-w-2xl
+            italic leading-relaxed text-white/90`}
         >
-          "If you don't have Don's fences, you don't have a fence."
+          "If you don't have <span className='font-bold'>Don's Fences</span>, you don't
+          have a fence."
         </Text>
 
-        <div className='flex flex-col gap-4 sm:flex-row sm:justify-center'>
-          <Button size='lg' asChild>
-            <Link href='/contact'>Get a Free Quote</Link>
+        <div
+          className={`fade-in-from-bottom ${getDelayClass(6)} flex gap-4 items-center
+            flex-wrap flex-row justify-center`}
+        >
+          <Button size='lg' className='' asChild>
+            <Link href='/contact'>
+              Get a Free Quote <Quote />
+            </Link>
           </Button>
-          <Button size='lg' variant='outline' asChild>
-            <Link href='/gallery'>See Our Work</Link>
+          <Button
+            size='lg'
+            variant='outline'
+            className='text-white bg-transparent'
+            asChild
+          >
+            <Link href='/gallery'>
+              See Our Work <ArrowRight />
+            </Link>
           </Button>
         </div>
       </div>

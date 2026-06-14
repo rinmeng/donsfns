@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { getDelayClass } from '@/utils/animations';
 
 const schema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -84,7 +85,10 @@ export function ContactForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-5'>
-        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+        <div
+          className={`fade-in-from-bottom ${getDelayClass(1)} grid grid-cols-1 gap-4
+            sm:grid-cols-2`}
+        >
           <FormField
             control={form.control}
             name='firstName'
@@ -117,7 +121,7 @@ export function ContactForm() {
           control={form.control}
           name='email'
           render={({ field }) => (
-            <FormItem>
+            <FormItem className={`fade-in-from-bottom ${getDelayClass(1)}`}>
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input type='email' placeholder='you@example.com' {...field} />
@@ -131,7 +135,7 @@ export function ContactForm() {
           control={form.control}
           name='phone'
           render={({ field }) => (
-            <FormItem>
+            <FormItem className={`fade-in-from-bottom ${getDelayClass(2)}`}>
               <FormLabel>
                 Phone{' '}
                 <Text as='span' size='sm' variant='muted' className='font-normal'>
@@ -139,7 +143,7 @@ export function ContactForm() {
                 </Text>
               </FormLabel>
               <FormControl>
-                <Input type='tel' placeholder='250-555-0000' {...field} />
+                <Input type='tel' placeholder='XXX-XXX-XXX' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -150,7 +154,7 @@ export function ContactForm() {
           control={form.control}
           name='service'
           render={({ field }) => (
-            <FormItem>
+            <FormItem className={`fade-in-from-bottom ${getDelayClass(3)}`}>
               <FormLabel>Service Needed</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
@@ -175,7 +179,7 @@ export function ContactForm() {
           control={form.control}
           name='message'
           render={({ field }) => (
-            <FormItem>
+            <FormItem className={`fade-in-from-bottom ${getDelayClass(4)}`}>
               <FormLabel>
                 Message{' '}
                 <Text as='span' size='sm' variant='muted' className='font-normal'>
@@ -194,7 +198,12 @@ export function ContactForm() {
           )}
         />
 
-        <Button type='submit' size='lg' disabled={isSubmitting} className='self-start'>
+        <Button
+          type='submit'
+          size='lg'
+          disabled={isSubmitting}
+          className={`fade-in-from-bottom ${getDelayClass(5)} self-start`}
+        >
           {isSubmitting ? 'Sending...' : 'Send Message'}
         </Button>
       </form>

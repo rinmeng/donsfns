@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-
 @plugin 'tailwindcss-animate';
 
 @custom-variant dark (&:is(.dark *));
@@ -11,24 +10,40 @@
   }
 
   .fade-in-from-bottom {
-    @apply animate-in slide-in-from-bottom-10 fade-in fill-mode-both duration-500;
+    @apply animate-in slide-in-from-bottom-20 fade-in fill-mode-both duration-500;
   }
 
   .fade-in-from-right {
-    @apply animate-in slide-in-from-right-10 fade-in fill-mode-both duration-500;
+    @apply animate-in slide-in-from-right-20 fade-in fill-mode-both duration-500;
   }
 
   .fade-in-from-left {
-    @apply animate-in slide-in-from-left-10 fade-in fill-mode-both duration-500;
-  }
-
-  .fade-in-from-left-full {
-    @apply animate-in slide-in-from-left-translate-full fade-in ease-out fill-mode-both
-      duration-300;
+    @apply animate-in slide-in-from-left-20 fade-in fill-mode-both duration-500;
   }
 
   .fade-in-from-top {
-    @apply animate-in slide-in-from-top-10 fade-in fill-mode-both duration-500;
+    @apply animate-in slide-in-from-top-20 fade-in fill-mode-both duration-500;
+  }
+
+  /* Subtle slide-up — for body copy and cards */
+  .fade-in-up {
+    @apply animate-in slide-in-from-bottom-4 fade-in fill-mode-both duration-700 ease-out;
+  }
+
+  /* Scale + fade — for cards and images */
+  .fade-in-scale {
+    @apply animate-in zoom-in-95 fade-in fill-mode-both duration-500 ease-out;
+  }
+
+  /* Pure fade — for separators and overlays */
+  .fade-in-opacity {
+    @apply animate-in fade-in fill-mode-both duration-600 ease-out;
+  }
+
+  /* Longer editorial slide — for hero/portrait images */
+  .fade-in-editorial {
+    @apply animate-in slide-in-from-bottom-8 fade-in fill-mode-both duration-1000
+      ease-out;
   }
 }
 

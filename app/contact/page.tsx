@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { ContactForm } from '@/components/contact/ContactForm';
 import { ContactInfo } from '@/components/contact/ContactInfo';
 import { Text } from '@/components/Text';
+import { getDelayClass } from '@/utils/animations';
 
 export const metadata: Metadata = {
   title: "Contact | Don's Fences & Services — Fencing Contractor Enderby BC",
@@ -14,10 +15,17 @@ export default function ContactPage() {
   return (
     <div className='mx-auto max-w-7xl px-4 pb-16 pt-28 sm:px-6 lg:px-8'>
       <div className='mb-10'>
-        <Text variant='hd-xxl' className='font-display tracking-wide'>
+        <Text
+          variant='hd-xxl'
+          className={`font-display tracking-wide fade-in-from-bottom ${getDelayClass(1)}`}
+        >
           Contact
         </Text>
-        <Text variant='muted' size='lg' className='mt-2'>
+        <Text
+          variant='muted'
+          size='lg'
+          className={`mt-2 fade-in-from-bottom ${getDelayClass(2)}`}
+        >
           Ready to get started? Reach out below.
         </Text>
       </div>

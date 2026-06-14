@@ -4,6 +4,7 @@ import { Car, Layers, ShieldCheck, Snowflake } from 'lucide-react';
 import { Text } from '@/components/Text';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { getDelayClass } from '@/utils/animations';
 
 const services = [
   {
@@ -39,28 +40,34 @@ export function ServicesPreview() {
   return (
     <section className='mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8'>
       <div className='mb-12 text-center'>
-        <Text variant='hd-xxl' className='font-display mb-3 tracking-wide'>
+        <Text
+          variant='hd-xxl'
+          className='fade-in-from-bottom mb-3 font-display tracking-wide'
+        >
           What We Do
         </Text>
-        <Text variant='muted' size='lg' className='mx-auto max-w-xl'>
+        <Text
+          variant='muted'
+          size='lg'
+          className={`fade-in-from-bottom ${getDelayClass(1)} mx-auto max-w-xl`}
+        >
           Fencing is the flagship. Everything else we do, we do right.
         </Text>
       </div>
 
       <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
-        {services.map(({ icon: Icon, title, description, featured }) => (
-          <Card key={title} className={featured ? 'border-primary/30 bg-primary/5' : ''}>
+        {services.map(({ icon: Icon, title, description, featured }, index) => (
+          <Card
+            key={title}
+            className={`fade-in-scale ${getDelayClass(index + 2)}
+            ${featured ? 'border-primary/30 bg-primary/5' : ''}`}
+          >
             <CardHeader className='pb-2'>
               <Icon
                 className={`mb-2 h-8 w-8
                 ${featured ? 'text-primary' : 'text-muted-foreground'}`}
               />
-              <Text
-                variant='hd-sm'
-                className={featured ? 'font-display tracking-wide' : ''}
-              >
-                {title}
-              </Text>
+              <Text variant='hd-sm'>{title}</Text>
             </CardHeader>
             <CardContent>
               <Text variant='muted' size='sm'>
@@ -72,7 +79,12 @@ export function ServicesPreview() {
       </div>
 
       <div className='mt-10 text-center'>
-        <Button variant='outline' size='lg' asChild>
+        <Button
+          variant='outline'
+          size='lg'
+          className={`fade-in-from-bottom ${getDelayClass(6)}`}
+          asChild
+        >
           <Link href='/services'>View All Services</Link>
         </Button>
       </div>

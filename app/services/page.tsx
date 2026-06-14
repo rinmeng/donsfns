@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { FencingSection } from '@/components/services/FencingSection';
 import { SecondaryServices } from '@/components/services/SecondaryServices';
 import { Text } from '@/components/Text';
+import { getDelayClass } from '@/utils/animations';
 
 export const metadata: Metadata = {
   title: "Services | Don's Fences & Services — Fencing Contractor Enderby BC",
@@ -14,10 +15,17 @@ export default function ServicesPage() {
   return (
     <>
       <div className='mx-auto max-w-7xl px-4 pb-8 pt-28 sm:px-6 lg:px-8'>
-        <Text variant='hd-xxl' className='font-display tracking-wide'>
+        <Text
+          variant='hd-xxl'
+          className={`font-display tracking-wide fade-in-from-bottom ${getDelayClass(1)}`}
+        >
           Services
         </Text>
-        <Text variant='muted' size='lg' className='mt-2 max-w-xl'>
+        <Text
+          variant='muted'
+          size='lg'
+          className={`mt-2 max-w-xl fade-in-from-bottom ${getDelayClass(2)}`}
+        >
           Fencing is the core. Everything else gets the same attention.
         </Text>
       </div>
