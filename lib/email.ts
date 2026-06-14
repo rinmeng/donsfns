@@ -4,6 +4,7 @@ export function buildEmailHtml({
   email,
   phone,
   service,
+  preferredDate,
   message,
 }: {
   firstName: string;
@@ -11,6 +12,7 @@ export function buildEmailHtml({
   email: string;
   phone?: string;
   service?: string;
+  preferredDate?: string;
   message?: string;
 }) {
   const optionalRow = (label: string, value?: string) =>
@@ -51,6 +53,7 @@ export function buildEmailHtml({
             </tr>
             ${optionalRow('Phone', phone)}
             ${optionalRow('Service', service)}
+            ${optionalRow('Preferred Date', preferredDate)}
           </table>
         </div>
 

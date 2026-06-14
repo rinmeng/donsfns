@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   const TO_EMAIL = process.env.TO_EMAIL || 'doncookbc@yahoo.ca';
 
   const body = await req.json();
-  const { firstName, lastName, email, phone, service, message } = body;
+  const { firstName, lastName, email, phone, service, preferredDate, message } = body;
 
   try {
     await Promise.all([
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
         to: TO_EMAIL,
         replyTo: email,
         subject: `New inquiry from ${firstName} ${lastName} — ${service}`,
-        html: buildEmailHtml({ firstName, lastName, email, phone, service, message }),
+        html: buildEmailHtml({ firstName, lastName, email, phone, service, preferredDate, message }),
       }),
       resend.emails.send({
         from: `Don's Fences & Services <${FROM_EMAIL}>`,

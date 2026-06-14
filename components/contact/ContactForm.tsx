@@ -2,11 +2,14 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { format } from 'date-fns';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { CalendarIcon } from 'lucide-react';
 import { z } from 'zod';
 
 import { Text } from '@/components/Text';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import {
   Form,
   FormControl,
@@ -16,6 +19,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -25,6 +29,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 import { getDelayClass } from '@/utils/animations';
 
 const schema = z.object({
@@ -33,6 +38,7 @@ const schema = z.object({
   email: z.email('Enter a valid email address'),
   phone: z.string().optional(),
   service: z.string().min(1, 'Please select a service'),
+  preferredDate: z.date().optional(),
   message: z.string().optional(),
 });
 
@@ -58,6 +64,7 @@ export function ContactForm() {
       email: '',
       phone: '',
       service: '',
+      preferredDate: undefined,
       message: '',
     },
   });
@@ -68,7 +75,12 @@ export function ContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          ...values,
+          preferredDate: values.preferredDate
+            ? format(values.preferredDate, 'PPP')
+            : undefined,
+        }),
       });
 
       if (!res.ok) throw new Error('Failed to send');
@@ -150,36 +162,81 @@ export function ContactForm() {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name='service'
-          render={({ field }) => (
-            <FormItem className={`fade-in-from-bottom ${getDelayClass(3)}`}>
-              <FormLabel>Service Needed</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder='Select a service' />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {serviceOptions.map((opt) => (
-                    <SelectItem key={opt} value={opt}>
-                      {opt}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+        <div
+          className={`fade-in-from-bottom ${getDelayClass(3)} grid grid-cols-1 gap-4 sm:grid-cols-2`}
+        >
+          <FormField
+            control={form.control}
+            name='service'
+            render={({ field }) => (
+              <FormItem className='flex flex-col'>
+                <FormLabel>Service Needed</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger className='w-full'>
+                      <SelectValue placeholder='Select a service' />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {serviceOptions.map((opt) => (
+                      <SelectItem key={opt} value={opt}>
+                        {opt}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='preferredDate'
+            render={({ field }) => (
+              <FormItem className='flex flex-col'>
+              <FormLabel>
+                Preferred Date{' '}
+                <Text as='span' size='sm' variant='muted' className='font-normal'>
+                  (optional)
+                </Text>
+              </FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant='outline'
+                      className={cn(
+                        'w-full justify-start text-left font-normal',
+                        !field.value && 'text-muted-foreground'
+                      )}
+                    >
+                      <CalendarIcon className='mr-2 h-4 w-4' />
+                      {field.value ? format(field.value, 'PPP') : 'Pick a date'}
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className='w-auto p-0' align='start'>
+                  <Calendar
+                    mode='single'
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) => date < new Date()}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}
         />
+        </div>
 
         <FormField
           control={form.control}
           name='message'
           render={({ field }) => (
-            <FormItem className={`fade-in-from-bottom ${getDelayClass(4)}`}>
+            <FormItem className={`fade-in-from-bottom ${getDelayClass(5)}`}>
               <FormLabel>
                 Message{' '}
                 <Text as='span' size='sm' variant='muted' className='font-normal'>
@@ -202,7 +259,7 @@ export function ContactForm() {
           type='submit'
           size='lg'
           disabled={isSubmitting}
-          className={`fade-in-from-bottom ${getDelayClass(5)} self-start`}
+          className={`fade-in-from-bottom ${getDelayClass(6)} self-start`}
         >
           {isSubmitting ? 'Sending...' : 'Send Message'}
         </Button>
