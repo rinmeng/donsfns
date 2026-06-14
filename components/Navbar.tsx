@@ -14,6 +14,7 @@ import {
 } from '@/components/ui';
 import { ModeToggle } from './ModeToggle';
 import { Logo } from './Logo';
+import { getDelayClass } from '@/utils/animations';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -32,24 +33,41 @@ export function Navbar() {
         className='mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6
           lg:px-8'
       >
-        <Logo onClick={() => setOpen(false)} />
+        <Logo
+          className={`fade-in-from-right ${getDelayClass(1)}`}
+          onClick={() => setOpen(false)}
+        />
 
         <div className='hidden items-center gap-4 md:flex'>
-          {navLinks.map((link) => (
-            <Button key={link.href} variant='ghost' asChild>
+          {navLinks.map((link, index) => (
+            <Button
+              key={link.href}
+              variant='ghost'
+              className={`fade-in-from-right ${getDelayClass(index + 2)}`}
+              asChild
+            >
               <Link href={link.href}>{link.label}</Link>
             </Button>
           ))}
-          <Button asChild>
+          <Button
+            asChild
+            className={`fade-in-from-right ${getDelayClass(navLinks.length + 2)}`}
+          >
             <Link href='/contact'>Get a Quote</Link>
           </Button>
-          <ModeToggle />
+          <ModeToggle
+            className={`fade-in-from-right ${getDelayClass(navLinks.length + 3)}`}
+          />
         </div>
 
         <div className='md:hidden'>
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <Button variant='outline' size='icon'>
+              <Button
+                variant='outline'
+                className={`fade-in-from-right ${getDelayClass(2)}`}
+                size='icon'
+              >
                 <Menu className='h-6 w-6' />
                 <span className='sr-only'>Toggle menu</span>
               </Button>
@@ -61,19 +79,30 @@ export function Navbar() {
                 </SheetTitle>
               </SheetHeader>
               <div className='mt-6 flex flex-col items-center gap-4'>
-                {navLinks.map((link) => (
-                  <Button key={link.href} variant='ghost' className='w-1/2' asChild>
+                {navLinks.map((link, index) => (
+                  <Button
+                    key={link.href}
+                    variant='ghost'
+                    className={`w-1/2 fade-in-from-right ${getDelayClass(index + 2)}`}
+                    asChild
+                  >
                     <Link href={link.href} onClick={() => setOpen(false)}>
                       {link.label}
                     </Link>
                   </Button>
                 ))}
-                <Button asChild className='w-1/2'>
+                <Button
+                  asChild
+                  className={`w-1/2 fade-in-from-right ${getDelayClass( navLinks.length +
+                    2 )}`}
+                >
                   <Link href='/contact' onClick={() => setOpen(false)}>
                     Get a Quote
                   </Link>
                 </Button>
-                <ModeToggle />
+                <ModeToggle
+                  className={`fade-in-from-right ${getDelayClass(navLinks.length + 3)}`}
+                />
               </div>
             </SheetContent>
           </Sheet>

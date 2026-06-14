@@ -13,7 +13,7 @@ export function HeroSection() {
         src='/don_3.jpg'
         alt='Fence installation by Don in the BC interior'
         fill
-        className='object-cover'
+        className={`object-cover fade-in-opacity ${getDelayClass(1)}`}
         priority
       />
       <div className='absolute inset-0 bg-black/60' />
