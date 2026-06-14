@@ -244,4 +244,7 @@
     @apply bg-background text-foreground;
     letter-spacing: var(--tracking-normal);
   }
+  html {
+    @apply scroll-smooth overflow-x-hidden;
+  }
 }
