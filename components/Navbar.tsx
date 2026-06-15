@@ -1,7 +1,8 @@
 'use client';
 
-import { Menu } from 'lucide-react';
+import { ArrowRight, Menu } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 import {
@@ -26,6 +27,7 @@ const navLinks = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <nav className='fixed z-50 w-full border-b bg-background'>
@@ -38,11 +40,11 @@ export function Navbar() {
           onClick={() => setOpen(false)}
         />
 
-        <div className='hidden items-center gap-4 md:flex'>
+        <div className='hidden items-center gap-4 lg:flex'>
           {navLinks.map((link, index) => (
             <Button
               key={link.href}
-              variant='ghost'
+              variant={pathname === link.href ? 'secondary' : 'ghost'}
               className={`fade-in-from-right ${getDelayClass(index + 2)}`}
               asChild
             >
@@ -53,14 +55,16 @@ export function Navbar() {
             asChild
             className={`fade-in-from-right ${getDelayClass(navLinks.length + 2)}`}
           >
-            <Link href='/contact'>Get a Quote</Link>
+            <Link href='/contact'>
+              Get a Quote <ArrowRight />
+            </Link>
           </Button>
           <ModeToggle
             className={`fade-in-from-right ${getDelayClass(navLinks.length + 3)}`}
           />
         </div>
 
-        <div className='md:hidden'>
+        <div className='lg:hidden'>
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button
@@ -82,7 +86,7 @@ export function Navbar() {
                 {navLinks.map((link, index) => (
                   <Button
                     key={link.href}
-                    variant='ghost'
+                    variant={pathname === link.href ? 'secondary' : 'ghost'}
                     className={`w-1/2 fade-in-from-right ${getDelayClass(index + 2)}`}
                     asChild
                   >
@@ -97,7 +101,7 @@ export function Navbar() {
                     2 )}`}
                 >
                   <Link href='/contact' onClick={() => setOpen(false)}>
-                    Get a Quote
+                    Get a Quote <ArrowRight />
                   </Link>
                 </Button>
                 <ModeToggle

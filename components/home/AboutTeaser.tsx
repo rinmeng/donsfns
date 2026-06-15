@@ -26,14 +26,14 @@ export function AboutTeaser() {
               variant='hd-xxl'
               className={`fade-in-from-right ${getDelayClass(1)} font-display tracking-wide`}
             >
-              Built on 12 Years of Not Cutting Corners
+              Building Fences Since 2002. Not Cutting Corners.
             </Text>
             <Text
               size='lg'
               variant='muted'
               className={`fade-in-from-right ${getDelayClass(3)}`}
             >
-              I'm Don. I've been building fences in the BC interior for over 12 years —
+              I'm Don. I've been building fences in the BC interior since 2002 —
               from highway barriers and BC Parks projects to ranch fences and residential
               gates across the Okanagan.
             </Text>

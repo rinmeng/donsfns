@@ -8,7 +8,7 @@ import { getDelayClass } from '@/utils/animations';
 export const metadata: Metadata = {
   title: 'Services',
   description:
-    'Fencing & gates, wood milling, automotive, and cold storage rental in Enderby, BC. Professional contractor serving Vernon, Armstrong, Salmon Arm, and the Okanagan.',
+    'Fencing & gates, wood milling, automotive, cold storage rental, and BC billboard installation in Enderby, BC. Professional contractor serving Vernon, Armstrong, Salmon Arm, and the Okanagan.',
   keywords: [
     'fence installation Enderby',
     'ranch fencing BC',
@@ -17,6 +17,8 @@ export const metadata: Metadata = {
     'wood milling Enderby BC',
     'cold storage rental BC',
     'automotive Enderby BC',
+    'BC billboard installation',
+    'highway billboard poster BC',
   ],
   alternates: { canonical: 'https://donsfences.ca/services' },
   openGraph: {

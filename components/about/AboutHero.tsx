@@ -37,14 +37,14 @@ export function AboutHero() {
             variant='hd-xxl'
             className={`fade-in-from-right ${getDelayClass(3)} font-display tracking-wide`}
           >
-            12 Years. One Standard.
+            Since 2002. One Standard.
           </Text>
           <Text
             size='lg'
             variant='muted'
             className={`fade-in-from-right ${getDelayClass(4)}`}
           >
-            I'm Don. I've spent over a decade building fences in the BC interior — from
+            I'm Don. I've been building fences in the BC interior since 2002 — from
             highway barriers along major routes to boundary fences deep in forestry land
             and installations for BC Parks.
           </Text>

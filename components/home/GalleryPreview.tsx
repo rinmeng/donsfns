@@ -6,9 +6,9 @@ import { Button } from '@/components/ui/button';
 import { getDelayClass } from '@/utils/animations';
 
 const previewImages = [
-  { src: '/don_4.jpg', alt: "Fence installation — Don's Fences & Services" },
-  { src: '/don_5.jpg', alt: 'Ranch fencing in the BC interior' },
-  { src: '/don_6.jpg', alt: "Custom gate by Don's Fences & Services" },
+  { src: '/don_4.jpg', alt: 'Backyard fence installation' },
+  { src: '/don_8.jpg', alt: 'Farm fencing in the BC interior' },
+  { src: '/don_11.jpg', alt: 'Fence gate installation for private property' },
 ];
 
 export function GalleryPreview() {
@@ -34,7 +34,8 @@ export function GalleryPreview() {
         {previewImages.map(({ src, alt }, index) => (
           <div
             key={src}
-            className={`fade-in-scale relative aspect-[4/3] overflow-hidden rounded-lg ${getDelayClass(index + 2)}`}
+            className={`fade-in-scale relative h-80 overflow-hidden rounded-lg
+            ${getDelayClass(index + 2)}`}
           >
             <Image
               src={src}

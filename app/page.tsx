@@ -8,13 +8,13 @@ import { ServicesPreview } from '@/components/home/ServicesPreview';
 export const metadata: Metadata = {
   title: "Don's Fences & Services | Fence Contractor Enderby BC",
   description:
-    'Professional fence installation in Enderby, BC. Serving Vernon, Armstrong, Salmon Arm, and the Okanagan. 12+ years experience including BC Parks and highway fencing.',
+    'Professional fence installation in Enderby, BC. Serving Vernon, Armstrong, Salmon Arm, and the Okanagan. since 2002 experience including BC Parks and highway fencing.',
   alternates: { canonical: 'https://donsfences.ca' },
   openGraph: {
     url: 'https://donsfences.ca',
     title: "Don's Fences & Services | Fence Contractor Enderby BC",
     description:
-      'Professional fence installation in Enderby, BC. 12+ years — BC Parks, highway, ranch, and residential fencing across the Okanagan.',
+      'Professional fence installation in Enderby, BC. since 2002 — BC Parks, highway, ranch, and residential fencing across the Okanagan.',
   },
 };
 

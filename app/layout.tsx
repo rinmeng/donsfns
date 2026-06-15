@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     template: "%s | Don's Fences & Services",
   },
   description:
-    'Professional fence installation in Enderby, BC. Serving Vernon, Armstrong, Salmon Arm, and the Okanagan. 12+ years experience including BC Parks and highway fencing projects.',
+    'Professional fence installation in Enderby, BC. Serving Vernon, Armstrong, Salmon Arm, and the Okanagan. fencing since 2002 including BC Parks and highway fencing projects.',
   keywords: [
     'fencing Enderby BC',
     'fence contractor Okanagan',
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     siteName: "Don's Fences & Services",
     title: "Don's Fences & Services | Fence Contractor Enderby BC",
     description:
-      'Professional fence installation in Enderby, BC. 12+ years experience — BC Parks, highway, ranch, and residential fencing across the Okanagan.',
+      'Professional fence installation in Enderby, BC. fencing since 2002 — BC Parks, highway, ranch, and residential fencing across the Okanagan.',
     images: [
       {
         url: '/don_3.jpg',
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "Don's Fences & Services | Fence Contractor Enderby BC",
     description:
-      'Professional fence installation in Enderby, BC. 12+ years — BC Parks, highway, ranch, and residential fencing.',
+      'Professional fence installation in Enderby, BC. Since 2002 — BC Parks, highway, ranch, and residential fencing.',
     images: ['/don_3.jpg'],
   },
 };
@@ -93,7 +93,7 @@ const jsonLd = {
   telephone: '+12503065064',
   email: 'doncookbc@yahoo.ca',
   description:
-    'Professional fence installation and contractor services in Enderby, BC. 12+ years experience including BC Parks, highway, and forestry fencing projects.',
+    'Professional fence installation and contractor services in Enderby, BC. fencing since 2002 including BC Parks, highway, and forestry fencing projects.',
   image: 'https://donsfences.ca/don_3.jpg',
   priceRange: '$$',
   address: {
@@ -125,6 +125,10 @@ const jsonLd = {
       {
         '@type': 'Offer',
         itemOffered: { '@type': 'Service', name: 'Cold Storage Rental' },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: 'BC Billboards' },
       },
     ],
   },

@@ -236,6 +236,16 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+.masonry-grid {
+  display: flex;
+  gap: 1rem;
+  width: auto;
+}
+
+.masonry-grid_column {
+  background-clip: padding-box;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

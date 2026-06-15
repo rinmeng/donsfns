@@ -3,7 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { getDelayClass } from '@/utils/animations';
 
 const stats = [
-  { value: '12+', label: 'Years Experience' },
+  { value: '2002', label: 'Est.' },
   { value: 'BC Parks', label: 'Provincial Projects' },
   { value: 'Highway', label: 'Large-Scale Work' },
   { value: 'Okanagan', label: 'Service Region' },

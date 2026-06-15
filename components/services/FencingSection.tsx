@@ -14,12 +14,15 @@ const fenceTypes = [
   'Forestry Fencing',
   'Residential Fencing',
   'Custom Gates',
+  'Chain Link Fencing',
+  'Chain Link Gates',
+  'Barbed Wire Fencing',
   'Agricultural Fencing',
   'Commercial Fencing',
 ];
 
 const highlights = [
-  '12+ years hands-on experience',
+  'Fencing since 2002 — 24 years hands-on',
   'BC Parks & highway-scale projects',
   'Precision work — fixed to the centimeter',
   'Enderby-based, serving the BC interior',

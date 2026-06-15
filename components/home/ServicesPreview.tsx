@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Car, Fence, Layers, Snowflake } from 'lucide-react';
+import { Car, Fence, Layers, Megaphone, Snowflake } from 'lucide-react';
 
 import { Text } from '@/components/Text';
 import { Button } from '@/components/ui/button';
@@ -24,7 +24,7 @@ const services = [
   {
     icon: Car,
     title: 'Automotive',
-    description: 'Mechanical work handled with the same precision I bring to every job.',
+    description: 'Full-service shop. Experienced mechanics, routine to complex repairs.',
     featured: false,
   },
   {
@@ -32,6 +32,13 @@ const services = [
     title: 'Cold Storage Rental',
     description:
       'Refrigerated units for meat aging, cattle storage, and agricultural cold storage rental.',
+    featured: false,
+  },
+  {
+    icon: Megaphone,
+    title: 'BC Billboards',
+    description:
+      'Highway billboard poster installation and removal across BC. Mounting and swapping advertising posters on roadside billboard structures.',
     featured: false,
   },
 ];
@@ -55,7 +62,7 @@ export function ServicesPreview() {
         </Text>
       </div>
 
-      <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
+      <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5'>
         {services.map(({ icon: Icon, title, description, featured }, index) => (
           <Card
             key={title}
@@ -82,7 +89,7 @@ export function ServicesPreview() {
         <Button
           variant='outline'
           size='lg'
-          className={`fade-in-from-bottom ${getDelayClass(6)}`}
+          className={`fade-in-from-bottom ${getDelayClass(7)}`}
           asChild
         >
           <Link href='/services'>View All Services</Link>

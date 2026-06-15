@@ -26,7 +26,7 @@ export function HeroSection() {
           className={`fade-in-from-bottom ${getDelayClass(0)} mb-4 uppercase font-mono
             font-bold tracking-[0.25em] text-white/70`}
         >
-          Enderby, BC · Est. 12+ Years
+          Enderby, BC · Est. 2002
         </Text>
 
         <Text

@@ -1,4 +1,4 @@
-import { Car, Layers, Snowflake } from 'lucide-react';
+import { Car, Layers, Megaphone, Snowflake } from 'lucide-react';
 
 import { Text } from '@/components/Text';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -15,13 +15,19 @@ const services = [
     icon: Car,
     title: 'Automotive',
     description:
-      'Mechanical work handled with the same precision as my fencing. Need something sorted on a vehicle? I handle it.',
+      'Full-service shop with mechanics who have years of expertise. Routine maintenance to complex repairs — done right.',
   },
   {
     icon: Snowflake,
     title: 'Cold Storage Rental',
     description:
       'Refrigerated storage units available for rent. Suitable for meat aging, cattle storage, and agricultural cold storage. Contact for availability and rates.',
+  },
+  {
+    icon: Megaphone,
+    title: 'BC Billboards',
+    description:
+      'Installation and removal of advertising posters on highway billboard structures across BC. Experienced with roadside billboard maintenance along major BC corridors.',
   },
 ];
 
@@ -45,7 +51,7 @@ export function SecondaryServices() {
           </Text>
         </div>
 
-        <div className='grid grid-cols-1 gap-6 sm:grid-cols-3'>
+        <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
           {services.map(({ icon: Icon, title, description }, index) => (
             <Card
               key={title}
