@@ -4,7 +4,7 @@ import { getDelayClass } from '@/utils/animations';
 
 const stats = [
   { value: '2002', label: 'Est.' },
-  { value: 'BC Parks', label: 'Provincial Projects' },
+  { value: 'Farms', label: 'Agricultural Projects' },
   { value: 'Highway', label: 'Large-Scale Work' },
   { value: 'Okanagan', label: 'Service Region' },
 ];

@@ -21,7 +21,7 @@ const services = [
     icon: Snowflake,
     title: 'Cold Storage Rental',
     description:
-      'Refrigerated storage units available for rent. Suitable for meat aging, cattle storage, and agricultural cold storage. Contact for availability and rates.',
+      'Refrigerated storage units for rent. Hunters and ranchers store moose, beef, and game — hang it, age it, pick it up when ready. Contact for availability and daily rates.',
   },
   {
     icon: Megaphone,

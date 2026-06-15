@@ -35,7 +35,7 @@ export function SiteFooter() {
               have a fence.
             </Text>
             <Text size='sm' variant='muted'>
-              Enderby, BC · Serving the Okanagan
+              Enderby, BC · Serving the BC Interior
             </Text>
           </div>
 
@@ -59,9 +59,9 @@ export function SiteFooter() {
             <Text variant='label' size='sm' className='mb-1 uppercase tracking-wider'>
               Contact
             </Text>
-            <Text size='sm' variant='muted'>
+            <a href='tel:+12503065064' className='text-sm text-muted-foreground underline transition-colors hover:text-foreground'>
               (250) 306-5064
-            </Text>
+            </a>
             <a
               href='mailto:doncookbc@yahoo.ca'
               className='text-sm text-muted-foreground underline transition-colors
@@ -81,7 +81,7 @@ export function SiteFooter() {
             © {new Date().getFullYear()} Don's Fences & Services · donsfences.ca
           </Text>
           <Text size='sm' variant='muted'>
-            Enderby · Vernon · Armstrong · Salmon Arm · Okanagan
+            Enderby · Vernon · Armstrong · Lake Country · Kelowna · Salmon Arm
           </Text>
         </div>
       </div>

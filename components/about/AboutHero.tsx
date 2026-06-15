@@ -46,16 +46,16 @@ export function AboutHero() {
           >
             I'm Don. I've been building fences in the BC interior since 2002 — from
             highway barriers along major routes to boundary fences deep in forestry land
-            and installations for BC Parks.
+            and fencing for farms and agricultural properties across the region.
           </Text>
           <Text
             size='lg'
             variant='muted'
             className={`fade-in-from-right ${getDelayClass(5)}`}
           >
-            Based in Enderby, I serve Vernon, Armstrong, Salmon Arm, and the broader
-            Okanagan. I've worked on projects most contractors won't touch, and I've done
-            them right.
+            Based in Enderby, I serve the BC interior — Vernon, Armstrong, Lake Country,
+            Kelowna, Salmon Arm, and everywhere in between. I've worked on projects most
+            contractors won't touch, and I've done them right.
           </Text>
           <Text
             size='lg'

@@ -9,8 +9,9 @@ const serviceAreas = [
   'Enderby',
   'Vernon',
   'Armstrong',
+  'Lake Country',
+  'Kelowna',
   'Salmon Arm',
-  'Okanagan Valley',
   'BC Interior',
 ];
 
@@ -33,11 +34,16 @@ export function ContactInfo() {
           className={`fade-in-from-bottom ${getDelayClass(2)} flex items-center gap-3`}
         >
           <Phone className='h-5 w-5 shrink-0 text-muted-foreground' />
-          <div>
+          <div className='flex flex-row gap-1'>
             <Text variant='label' size='sm'>
-              Phone
+              Phone:
             </Text>
-            <Text>(250) 306-5064</Text>
+            <a
+              href='tel:+12503065064'
+              className='text-sm underline transition-colors hover:text-foreground'
+            >
+              (250) 306-5064
+            </a>
           </div>
         </div>
 

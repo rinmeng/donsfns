@@ -37,13 +37,15 @@ export const metadata: Metadata = {
     template: "%s | Don's Fences & Services",
   },
   description:
-    'Professional fence installation in Enderby, BC. Serving Vernon, Armstrong, Salmon Arm, and the Okanagan. fencing since 2002 including BC Parks and highway fencing projects.',
+    'Professional fence installation in Enderby, BC. Serving the BC interior — Vernon, Armstrong, Lake Country, Kelowna, and Salmon Arm. Fencing since 2002.',
   keywords: [
     'fencing Enderby BC',
-    'fence contractor Okanagan',
+    'fence contractor BC interior',
     'fence installation Vernon BC',
+    'fence installation Kelowna',
+    'fence installation Salmon Arm',
+    'fence installation Lake Country',
     'ranch fencing BC',
-    'BC Parks fencing contractor',
     'highway fencing BC',
     'custom gates Enderby',
     'wood milling Enderby',
@@ -66,7 +68,7 @@ export const metadata: Metadata = {
     siteName: "Don's Fences & Services",
     title: "Don's Fences & Services | Fence Contractor Enderby BC",
     description:
-      'Professional fence installation in Enderby, BC. fencing since 2002 — BC Parks, highway, ranch, and residential fencing across the Okanagan.',
+      'Professional fence installation in Enderby, BC. Since 2002 — highway, ranch, and residential fencing across the BC interior.',
     images: [
       {
         url: '/don_3.jpg',
@@ -80,7 +82,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "Don's Fences & Services | Fence Contractor Enderby BC",
     description:
-      'Professional fence installation in Enderby, BC. Since 2002 — BC Parks, highway, ranch, and residential fencing.',
+      'Professional fence installation in Enderby, BC. Since 2002 — highway, ranch, and residential fencing across the BC interior.',
     images: ['/don_3.jpg'],
   },
 };
@@ -93,7 +95,7 @@ const jsonLd = {
   telephone: '+12503065064',
   email: 'doncookbc@yahoo.ca',
   description:
-    'Professional fence installation and contractor services in Enderby, BC. fencing since 2002 including BC Parks, highway, and forestry fencing projects.',
+    'Professional fence installation and contractor services in Enderby, BC. Fencing since 2002 across the BC interior — Vernon, Armstrong, Lake Country, Kelowna, and Salmon Arm.',
   image: 'https://donsfences.ca/don_3.jpg',
   priceRange: '$$',
   address: {
@@ -111,8 +113,9 @@ const jsonLd = {
     { '@type': 'City', name: 'Enderby' },
     { '@type': 'City', name: 'Vernon' },
     { '@type': 'City', name: 'Armstrong' },
+    { '@type': 'City', name: 'Lake Country' },
+    { '@type': 'City', name: 'Kelowna' },
     { '@type': 'City', name: 'Salmon Arm' },
-    { '@type': 'AdministrativeArea', name: 'Okanagan Valley' },
     { '@type': 'AdministrativeArea', name: 'BC Interior' },
   ],
   hasOfferCatalog: {

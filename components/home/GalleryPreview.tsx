@@ -26,7 +26,7 @@ export function GalleryPreview() {
           size='lg'
           className={`fade-in-from-bottom ${getDelayClass(1)} mx-auto max-w-xl`}
         >
-          Fence installations across Enderby, Vernon, Armstrong, and the broader Okanagan.
+          Fence installations across Enderby, Vernon, Armstrong, Lake Country, Kelowna, and Salmon Arm.
         </Text>
       </div>
 
