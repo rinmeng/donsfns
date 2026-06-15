@@ -18,17 +18,14 @@ export function SiteFooter() {
       <div className='mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
           <div className='flex flex-col gap-3'>
-            <Link href='/' className='flex items-center gap-2'>
+            <Link href='/'>
               <Image
-                src='/dons_fences_icon_1x1.svg'
+                src='/dons_fences_logo_horizontal.svg'
                 alt="Don's Fences & Services"
-                width={36}
-                height={36}
-                className='h-9 w-9'
+                width={200}
+                height={50}
+                className='h-14 w-auto'
               />
-              <span className='font-display text-xl leading-none tracking-wide'>
-                Don's Fences
-              </span>
             </Link>
             <Text size='sm' variant='muted' className='max-w-xs'>
               If you don't have <span className='font-bold'>Don's Fences</span>, you don't
@@ -59,7 +56,11 @@ export function SiteFooter() {
             <Text variant='label' size='sm' className='mb-1 uppercase tracking-wider'>
               Contact
             </Text>
-            <a href='tel:+12503065064' className='text-sm text-muted-foreground underline transition-colors hover:text-foreground'>
+            <a
+              href='tel:+12503065064'
+              className='text-sm text-muted-foreground underline transition-colors
+                hover:text-foreground'
+            >
               (250) 306-5064
             </a>
             <a
@@ -74,15 +75,37 @@ export function SiteFooter() {
 
         <Separator className='my-8' />
 
-        <div
-          className='flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between'
-        >
-          <Text size='sm' variant='muted'>
-            © {new Date().getFullYear()} Don's Fences & Services · donsfences.ca
-          </Text>
-          <Text size='sm' variant='muted'>
-            Enderby · Vernon · Armstrong · Lake Country · Kelowna · Salmon Arm
-          </Text>
+        <div className='flex flex-col items-center gap-4'>
+          <div
+            className='flex flex-col gap-2 w-full sm:flex-row sm:items-center
+              sm:justify-between'
+          >
+            <Text size='sm' variant='muted'>
+              © {new Date().getFullYear()} Don's Fences & Services · donsfences.ca
+            </Text>
+            <Text size='sm' variant='muted'>
+              Enderby · Vernon · Armstrong · Lake Country · Kelowna · Salmon Arm
+            </Text>
+          </div>
+
+          <Link
+            href='https://web8th.com'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='flex items-center gap-1.5 text-muted-foreground transition-opacity
+              hover:opacity-70'
+          >
+            <Text size='sm' variant='muted'>
+              built by
+            </Text>
+            <Image
+              src='/icons/8th_svg.svg'
+              alt='Web8th'
+              width={40}
+              height={40}
+              className='not-dark:invert'
+            />
+          </Link>
         </div>
       </div>
     </footer>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 535 210" role="img" style="">
+  <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Don's Fences &amp; Services Logo — Horizontal</title>
+  <desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Horizontal logo with D lettermark on the left and text on the right</desc>
+
+  <defs>
+    
+  </defs>
+
+  <rect width="525" height="200" fill="#FFFFFF" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <g transform="translate(90,100)" style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+    <path d="M-60 -75 L-60 75 L-15 75 Q60 75 60 0 Q60 -75 -15 -75 Z" fill="#2C2C2C" style="fill:rgb(44, 44, 44);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <path d="M-40 -52 L-40 52 L-12 52 Q38 52 38 0 Q38 -52 -12 -52 Z" fill="#FFFFFF" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  </g>
+
+  <line x1="172" y1="48" x2="172" y2="152" stroke="#C8860A" stroke-width="1.5" style="fill:rgb(0, 0, 0);stroke:rgb(200, 134, 10);color:rgb(0, 0, 0);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <text x="190" y="108" font-family="'Bebas Neue', sans-serif" font-size="58" letter-spacing="5" fill="#2C2C2C" style="fill:rgb(44, 44, 44);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Bebas Neue&quot;, sans-serif;font-size:58px;font-weight:400;text-anchor:start;dominant-baseline:auto">DON'S FENCES</text>
+
+  <text x="190" y="145" font-family="'Bebas Neue', sans-serif" font-size="26" letter-spacing="6" fill="#C8860A" style="fill:rgb(200, 134, 10);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Bebas Neue&quot;, sans-serif;font-size:26px;font-weight:400;text-anchor:start;dominant-baseline:auto">&amp; SERVICES</text>
+</svg>

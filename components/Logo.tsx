@@ -9,17 +9,14 @@ interface LogoProps {
 
 export function Logo({ onClick, className }: LogoProps) {
   return (
-    <Link href='/' className={cn('flex items-center gap-2', className)} onClick={onClick}>
+    <Link href='/' className={cn('flex items-center', className)} onClick={onClick}>
       <Image
-        src='/dons_fences_icon_1x1.svg'
+        src='/dons_fences_logo_horizontal.svg'
         alt="Don's Fences & Services"
-        width={36}
-        height={36}
-        className='h-9 w-9'
+        width={200}
+        height={50}
+        className='h-14 w-auto'
       />
-      <span className='font-display hidden text-xl leading-none tracking-wide sm:block'>
-        Don's Fences
-      </span>
     </Link>
   );
 }

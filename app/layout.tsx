@@ -37,29 +37,46 @@ export const metadata: Metadata = {
     template: "%s | Don's Fences & Services",
   },
   description:
-    'Professional fence installation in Enderby, BC. Serving the BC interior — Vernon, Armstrong, Lake Country, Kelowna, and Salmon Arm. Fencing since 2002.',
+    'Fence contractor based in Enderby, BC — serving the BC interior since 2002. Ranch, highway, farm, and residential fencing across Vernon, Kelowna, Salmon Arm, and beyond.',
   keywords: [
-    'fencing Enderby BC',
+    'fence contractor Enderby BC',
+    'fence installation Enderby BC',
     'fence contractor BC interior',
     'fence installation Vernon BC',
-    'fence installation Kelowna',
-    'fence installation Salmon Arm',
-    'fence installation Lake Country',
-    'ranch fencing BC',
-    'highway fencing BC',
-    'custom gates Enderby',
-    'wood milling Enderby',
-    'cold storage rental BC interior',
-    "Don's Fences",
-    'fencing contractor BC',
+    'fence installation Kelowna BC',
+    'fence installation Salmon Arm BC',
+    'fence installation Armstrong BC',
+    'fence installation Lake Country BC',
+    'ranch fencing BC interior',
+    'farm fencing BC',
+    'highway fencing contractor BC',
+    'agricultural fencing BC',
+    'custom fence gates BC',
+    'wood milling Enderby BC',
+    'cold storage meat aging BC interior',
+    "Don's Fences Enderby",
   ],
+  icons: {
+    icon: [
+      { url: '/dons_fences_logo_1x1.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico' },
+    ],
+    shortcut: '/dons_fences_logo_1x1.svg',
+    apple: '/dons_fences_logo_1x1.svg',
+  },
   authors: [{ name: "Don's Fences & Services", url: 'https://donsfences.ca' }],
   creator: "Don's Fences & Services",
   publisher: "Don's Fences & Services",
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true },
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
+    },
   },
   openGraph: {
     type: 'website',
@@ -68,7 +85,7 @@ export const metadata: Metadata = {
     siteName: "Don's Fences & Services",
     title: "Don's Fences & Services | Fence Contractor Enderby BC",
     description:
-      'Professional fence installation in Enderby, BC. Since 2002 — highway, ranch, and residential fencing across the BC interior.',
+      'Fence contractor based in Enderby, BC — serving the BC interior since 2002. Ranch, highway, farm, and residential fencing across Vernon, Kelowna, Salmon Arm, and beyond.',
     images: [
       {
         url: '/don_3.jpg',
@@ -82,21 +99,23 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "Don's Fences & Services | Fence Contractor Enderby BC",
     description:
-      'Professional fence installation in Enderby, BC. Since 2002 — highway, ranch, and residential fencing across the BC interior.',
+      'Fence contractor based in Enderby, BC — serving the BC interior since 2002. Ranch, highway, farm, and residential fencing.',
     images: ['/don_3.jpg'],
   },
 };
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
+  '@type': 'GeneralContractor',
   name: "Don's Fences & Services",
   url: 'https://donsfences.ca',
   telephone: '+12503065064',
   email: 'doncookbc@yahoo.ca',
+  foundingDate: '2002',
   description:
-    'Professional fence installation and contractor services in Enderby, BC. Fencing since 2002 across the BC interior — Vernon, Armstrong, Lake Country, Kelowna, and Salmon Arm.',
+    'Fence contractor based in Enderby, BC. Serving the BC interior since 2002 — ranch, highway, farm, and residential fencing across Vernon, Armstrong, Lake Country, Kelowna, and Salmon Arm.',
   image: 'https://donsfences.ca/don_3.jpg',
+  logo: 'https://donsfences.ca/dons_fences_logo_1x1.svg',
   priceRange: '$$',
   address: {
     '@type': 'PostalAddress',
@@ -118,24 +137,66 @@ const jsonLd = {
     { '@type': 'City', name: 'Salmon Arm' },
     { '@type': 'AdministrativeArea', name: 'BC Interior' },
   ],
+  serviceType: [
+    'Fence Installation',
+    'Ranch Fencing',
+    'Farm Fencing',
+    'Highway Fencing',
+    'Custom Gate Installation',
+    'Wood Milling',
+    'Automotive Repair',
+    'Cold Storage Rental',
+    'Billboard Installation',
+  ],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Services',
     itemListElement: [
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Fencing & Gates' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Wood Milling' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Automotive' } },
       {
         '@type': 'Offer',
-        itemOffered: { '@type': 'Service', name: 'Cold Storage Rental' },
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Fencing & Gates',
+          description:
+            'Ranch, farm, highway, residential, and custom gate installation across the BC interior.',
+        },
       },
       {
         '@type': 'Offer',
-        itemOffered: { '@type': 'Service', name: 'BC Billboards' },
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Wood Milling',
+          description: 'Custom lumber cutting — boards, planks, and custom dimensions.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Automotive',
+          description:
+            'Full-service auto repair — routine maintenance to complex repairs.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Cold Storage Rental',
+          description:
+            'Refrigerated storage for hunters and ranchers to hang and age moose, beef, and game.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'BC Billboard Installation',
+          description: 'Highway billboard poster installation and removal across BC.',
+        },
       },
     ],
   },
-  sameAs: [],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
