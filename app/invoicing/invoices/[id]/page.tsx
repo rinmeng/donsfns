@@ -1,9 +1,15 @@
-﻿import { format } from 'date-fns';
+﻿import { format, formatDate } from 'date-fns';
 import { ChevronLeft, Info, Pencil } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import type { Client, Invoice, InvoiceEmailLog, InvoiceSnapshot, LineItem } from '@/types/database';
+import type {
+  Client,
+  Invoice,
+  InvoiceEmailLog,
+  InvoiceSnapshot,
+  LineItem,
+} from '@/types/database';
 import { SentHistory } from '@/components/invoicing/SentHistory';
 import { SendInvoiceButton } from '@/components/invoicing/SendInvoiceButton';
 import { Text } from '@/components/Text';
@@ -36,7 +42,9 @@ export default async function InvoiceDetailPage({
   const logs = (logData ?? []) as unknown as InvoiceEmailLog[];
 
   const latestLog = logs[0] ?? null;
-  const latestSnapshot = latestLog ? (latestLog.snapshot as unknown as InvoiceSnapshot) : null;
+  const latestSnapshot = latestLog
+    ? (latestLog.snapshot as unknown as InvoiceSnapshot)
+    : null;
 
   const isStale = (() => {
     if (invoice.status !== 'sent' || !latestSnapshot) return false;
@@ -75,18 +83,20 @@ export default async function InvoiceDetailPage({
         <div
           className='flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50
             px-4 py-3 text-sm text-amber-900 dark:border-amber-800/50 dark:bg-amber-950/30
-            dark:text-amber-200'
+            dark:text-amber-200 max-w-4xl mx-auto'
         >
           <Info className='mt-0.5 h-4 w-4 shrink-0' />
           <span>
-            This invoice was already sent to <strong>{latestLog.recipient_email}</strong>{' '}
-            and has since been edited. Use <strong>Resend Invoice</strong> to send the
-            updated version to the client.
+            This invoice was sent to <strong>{latestLog.recipient_email}</strong> on{' '}
+            <strong>{formatDate(new Date(latestLog.sent_at), 'MMM d, yyyy')}</strong> at{' '}
+            <strong>{formatDate(new Date(latestLog.sent_at), 'h:mm a')}</strong>, but it's
+            changed since then. The client may have an outdated version — resend to update
+            them.
           </span>
         </div>
       )}
 
-      <div className='max-w-4xl space-y-8'>
+      <div className='max-w-4xl mx-auto space-y-8'>
         {/* Header */}
         <div className='flex flex-wrap items-start justify-between gap-4'>
           <div>
