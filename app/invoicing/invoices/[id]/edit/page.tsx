@@ -4,6 +4,9 @@ import type { Client, Invoice } from '@/types/database';
 import { InvoiceForm } from '@/components/invoicing/InvoiceForm';
 import { Text } from '@/components/Text';
 import { createAdminClient } from '@/utils/supabase/server-admin';
+import { Button } from '@/components/ui';
+import Link from 'next/link';
+import { ChevronLeft } from 'lucide-react';
 
 export default async function EditInvoicePage({
   params,
@@ -24,14 +27,22 @@ export default async function EditInvoicePage({
   const clients = (clientData ?? []) as Client[];
 
   return (
-    <div className='max-w-4xl'>
-      <Text variant='hd-md' className='mb-6 flex items-center gap-2'>
-        Edit{' '}
-        <Text variant='hd-md' className='font-mono'>
-          {invoice.invoice_number}
+    <>
+      <Button variant='outline' size='sm' asChild className='mb-2 w-full lg:w-auto'>
+        <Link href='/invoicing/invoices'>
+          <ChevronLeft />
+          Back to Invoices
+        </Link>
+      </Button>
+      <div className='max-w-4xl mx-auto'>
+        <Text variant='hd-md' className='mb-6 flex items-center gap-2'>
+          Edit{' '}
+          <Text variant='hd-md' className='font-mono'>
+            {invoice.invoice_number}
+          </Text>
         </Text>
-      </Text>
-      <InvoiceForm clients={clients} invoice={invoice} />
-    </div>
+        <InvoiceForm clients={clients} invoice={invoice} />
+      </div>
+    </>
   );
 }

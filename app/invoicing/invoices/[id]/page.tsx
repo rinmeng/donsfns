@@ -72,7 +72,7 @@ export default async function InvoiceDetailPage({
 
   return (
     <div className='space-y-4'>
-      <Button variant='outline' size='sm' asChild>
+      <Button variant='outline' size='sm' asChild className='mb-2 w-full lg:w-auto'>
         <Link href='/invoicing/invoices'>
           <ChevronLeft />
           Back to Invoices
