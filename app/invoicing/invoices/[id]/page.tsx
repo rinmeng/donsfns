@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import type { Client, Invoice, InvoiceEmailLog } from '@/types/database';
-import { diffSnapshot } from '@/lib/invoicing/diff-snapshot';
 import { SentHistory } from '@/components/invoicing/SentHistory';
 import { SendInvoiceButton } from '@/components/invoicing/SendInvoiceButton';
 import { Text } from '@/components/Text';
@@ -40,16 +39,7 @@ export default async function InvoiceDetailPage({
   const isStale =
     invoice.status === 'sent' &&
     latestLog !== null &&
-    diffSnapshot(
-      {
-        line_items: invoice.line_items,
-        subtotal: invoice.subtotal,
-        tax_rate: invoice.tax_rate,
-        tax_amount: invoice.tax_amount,
-        total: invoice.total,
-      },
-      latestLog.snapshot
-    ).changed;
+    new Date(invoice.updated_at) > new Date(latestLog.sent_at);
 
   return (
     <div className='space-y-4'>
@@ -68,9 +58,9 @@ export default async function InvoiceDetailPage({
         >
           <Info className='mt-0.5 h-4 w-4 shrink-0' />
           <span>
-            This invoice was already sent to{' '}
-            <strong>{latestLog.recipient_email}</strong> and has since been edited. Use{' '}
-            <strong>Resend Invoice</strong> to send the updated version to the client.
+            This invoice was already sent to <strong>{latestLog.recipient_email}</strong>{' '}
+            and has since been edited. Use <strong>Resend Invoice</strong> to send the
+            updated version to the client.
           </span>
         </div>
       )}
@@ -156,15 +146,33 @@ export default async function InvoiceDetailPage({
             >
               Last Sent
             </Text>
-            {invoice.sent_at ? (
-              <Text as='p' size='sm'>
-                {format(new Date(invoice.sent_at), 'MMMM d, yyyy · h:mm a')}
-              </Text>
-            ) : (
+            {logs.length === 0 ? (
               <Text as='p' size='sm' variant='muted'>
                 Not sent yet. Click <span className='font-bold'>Send Invoice</span> above
                 to send it.
               </Text>
+            ) : (
+              <div className='space-y-1'>
+                {logs.slice(0, 3).map((log, i) => (
+                  <Text
+                    key={log.id}
+                    size='sm'
+                    variant={i === 0 ? undefined : 'muted'}
+                    className={i === 0 ? 'font-semibold' : ''}
+                  >
+                    {format(new Date(log.sent_at), 'MMM d, yyyy · h:mm a')}
+                  </Text>
+                ))}
+                {logs.length > 3 && (
+                  <a
+                    href='#send-history'
+                    className='text-xs text-muted-foreground underline-offset-4
+                      hover:underline'
+                  >
+                    See more
+                  </a>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -235,7 +243,7 @@ export default async function InvoiceDetailPage({
               <Text as='span' size='sm'>
                 Total
               </Text>
-              <Text as='span' size='sm'>
+              <Text id='send-history' as='span' size='sm'>
                 ${invoice.total.toFixed(2)}
               </Text>
             </div>
@@ -258,7 +266,6 @@ export default async function InvoiceDetailPage({
             </Text>
           </div>
         )}
-
         {/* Sent history */}
         <div>
           <Text as='h3' variant='hd-sm' className='mb-4'>
