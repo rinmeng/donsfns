@@ -75,7 +75,7 @@ export function LoginDialog({ className }: { className?: string }) {
           className={className}
           aria-label='Sign out'
         >
-          {user.email}
+          Log out?
           <LogOut className='h-4 w-4' />
         </Button>
         <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
@@ -99,7 +99,8 @@ export function LoginDialog({ className }: { className?: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant='outline' size='icon' className={className} aria-label='Sign in'>
+        <Button variant='outline' className={className} aria-label='Sign in'>
+          Log in
           <LogIn className='h-4 w-4' />
         </Button>
       </DialogTrigger>

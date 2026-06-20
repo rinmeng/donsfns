@@ -16,7 +16,15 @@ export async function POST(req: Request) {
         to: TO_EMAIL,
         replyTo: email,
         subject: `New inquiry from ${firstName} ${lastName} — ${service}`,
-        html: buildEmailHtml({ firstName, lastName, email, phone, service, preferredDate, message }),
+        html: buildEmailHtml({
+          firstName,
+          lastName,
+          email,
+          phone,
+          service,
+          preferredDate,
+          message,
+        }),
       }),
       resend.emails.send({
         from: `Don's Fences & Services <${FROM_EMAIL}>`,
