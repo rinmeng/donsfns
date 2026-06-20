@@ -18,7 +18,14 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
 
 interface Props {
@@ -58,7 +65,6 @@ export function SendInvoiceButton({
         setPhase('sent');
         router.refresh();
         toast.success(`Invoice ${invoiceNumber} sent to ${recipientEmail}.`);
-        setTimeout(() => setPhase('idle'), 2000);
       }
     });
   }
@@ -91,21 +97,36 @@ export function SendInvoiceButton({
         </AlertDialogContent>
       </AlertDialog>
 
-      <Dialog open={phase !== 'idle'} onOpenChange={() => {}}>
+      <Dialog
+        open={phase !== 'idle'}
+        onOpenChange={(open) => {
+          if (!open && phase === 'sent') setPhase('idle');
+        }}
+      >
         <DialogContent
           className='flex max-w-xs flex-col items-center gap-4 py-10'
-          onInteractOutside={(e) => e.preventDefault()}
-          onEscapeKeyDown={(e) => e.preventDefault()}
+          onInteractOutside={(e) => phase === 'sending' && e.preventDefault()}
+          onEscapeKeyDown={(e) => phase === 'sending' && e.preventDefault()}
         >
           <DialogHeader>
             <DialogTitle className='text-center'>
               {phase === 'sent' ? `Invoice ${invoiceNumber} Sent.` : 'Sending invoice…'}
             </DialogTitle>
+            <DialogDescription className='text-center'>
+              {phase === 'sent'
+                ? `Invoice ${invoiceNumber} has been sent to ${recipientEmail}.`
+                : 'Please wait while we send your invoice.'}
+            </DialogDescription>
           </DialogHeader>
           {phase === 'sent' ? (
             <CheckCircle2 className='size-8 text-green-500' />
           ) : (
             <Spinner className='size-8' />
+          )}
+          {phase === 'sent' && (
+            <DialogFooter>
+              <Button onClick={() => setPhase('idle')}>Close</Button>
+            </DialogFooter>
           )}
         </DialogContent>
       </Dialog>

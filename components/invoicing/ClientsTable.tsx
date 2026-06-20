@@ -170,7 +170,7 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
             <AlertDialogTitle>Delete client?</AlertDialogTitle>
             <AlertDialogDescription>
               This will permanently delete <strong>{deleteTarget?.name}</strong>. Any
-              invoices linked to this client will lose their client reference.
+              invoices linked to this client will be <strong>deleted</strong> as well.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
