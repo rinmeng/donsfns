@@ -163,7 +163,8 @@ export function ContactForm() {
         />
 
         <div
-          className={`fade-in-from-bottom ${getDelayClass(3)} grid grid-cols-1 gap-4 sm:grid-cols-2`}
+          className={`fade-in-from-bottom ${getDelayClass(3)} grid grid-cols-1 gap-4
+            sm:grid-cols-2`}
         >
           <FormField
             control={form.control}
@@ -195,40 +196,40 @@ export function ContactForm() {
             name='preferredDate'
             render={({ field }) => (
               <FormItem className='flex flex-col'>
-              <FormLabel>
-                Preferred Date{' '}
-                <Text as='span' size='sm' variant='muted' className='font-normal'>
-                  (optional)
-                </Text>
-              </FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant='outline'
-                      className={cn(
-                        'w-full justify-start text-left font-normal',
-                        !field.value && 'text-muted-foreground'
-                      )}
-                    >
-                      <CalendarIcon className='mr-2 h-4 w-4' />
-                      {field.value ? format(field.value, 'PPP') : 'Pick a date'}
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className='w-auto p-0' align='start'>
-                  <Calendar
-                    mode='single'
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) => date < new Date()}
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormLabel>
+                  Preferred Date{' '}
+                  <Text as='span' size='sm' variant='muted' className='font-normal'>
+                    (optional)
+                  </Text>
+                </FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant='outline'
+                        className={cn(
+                          'w-full justify-start text-left font-normal',
+                          !field.value && 'text-muted-foreground'
+                        )}
+                      >
+                        <CalendarIcon className='mr-2 h-4 w-4' />
+                        {field.value ? format(field.value, 'PPP') : 'Pick a date'}
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className='w-auto p-0' align='start'>
+                    <Calendar
+                      mode='single'
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) => date < new Date()}
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
         <FormField

@@ -75,7 +75,7 @@ export function Navbar() {
         {/* Invoicing row — desktop only, visible when logged in */}
         {user && (
           <div
-            className='fade-in-from-right hidden border-t py-2 lg:flex justify-center
+            className='fade-in-from-bottom hidden border-t py-2 lg:flex justify-center
               gap-2 items-center flex-col'
           >
             <Text variant='default' size='sm'>

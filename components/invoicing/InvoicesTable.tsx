@@ -1,12 +1,13 @@
 ﻿'use client';
 
 import { format } from 'date-fns';
-import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
+import { Eye, Info, Lightbulb, Pencil, Plus, Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 
-import { deleteInvoice } from '@/actions/invoicing/invoices';
 import type { Client, Invoice } from '@/types/database';
+import { useToast } from '@/hooks/use-toast';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,6 +21,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 import { Text } from '@/components/Text';
 import {
   Table,
@@ -41,11 +43,20 @@ interface InvoiceRow extends Invoice {
 }
 
 export function InvoicesTable({ invoices }: { invoices: InvoiceRow[] }) {
+  const router = useRouter();
+  const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
   function handleDelete(id: string) {
     startTransition(async () => {
-      await deleteInvoice(id);
+      const res = await fetch(`/api/invoicing/invoices/${id}`, { method: 'DELETE' });
+      const result = await res.json();
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
+      router.refresh();
+      toast.success('Invoice deleted.');
     });
   }
 
@@ -57,7 +68,7 @@ export function InvoicesTable({ invoices }: { invoices: InvoiceRow[] }) {
         </Text>
         <Button size='sm' asChild>
           <Link href='/invoicing/invoices/new'>
-            <Plus className='mr-1.5 h-4 w-4' />
+            <Plus />
             New Invoice
           </Link>
         </Button>
@@ -140,7 +151,11 @@ export function InvoicesTable({ invoices }: { invoices: InvoiceRow[] }) {
                                   hover:text-destructive'
                                 disabled={isPending}
                               >
-                                <Trash2 className='h-3.5 w-3.5' />
+                                {isPending ? (
+                                  <Spinner className='h-3.5 w-3.5' />
+                                ) : (
+                                  <Trash2 className='h-3.5 w-3.5' />
+                                )}
                               </Button>
                             </AlertDialogTrigger>
                           </TooltipTrigger>

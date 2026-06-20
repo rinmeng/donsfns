@@ -3,8 +3,10 @@
 import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { useState, useTransition } from 'react';
 
-import { deleteClient } from '@/actions/invoicing/clients';
+import { useRouter } from 'next/navigation';
+
 import type { Client } from '@/types/database';
+import { useToast } from '@/hooks/use-toast';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,6 +18,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 import { Text } from '@/components/Text';
 import {
   Table,
@@ -35,6 +38,8 @@ import {
 import { ClientDialog } from './ClientDialog';
 
 export function ClientsTable({ clients }: { clients: Client[] }) {
+  const router = useRouter();
+  const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<Client | undefined>();
   const [deleteTarget, setDeleteTarget] = useState<Client | undefined>();
@@ -53,15 +58,26 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
   function confirmDelete() {
     if (!deleteTarget) return;
     startTransition(async () => {
-      await deleteClient(deleteTarget.id);
+      const res = await fetch(`/api/invoicing/clients/${deleteTarget.id}`, {
+        method: 'DELETE',
+      });
+      const result = await res.json();
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
       setDeleteTarget(undefined);
+      router.refresh();
+      toast.success('Client deleted.');
     });
   }
 
   return (
     <>
       <div className='mb-4 flex items-center justify-between'>
-        <Text size='sm' variant='muted'>{clients.length} client{clients.length !== 1 ? 's' : ''}</Text>
+        <Text size='sm' variant='muted'>
+          {clients.length} client{clients.length !== 1 ? 's' : ''}
+        </Text>
         <Button size='sm' onClick={openCreate}>
           <Plus className='mr-1.5 h-4 w-4' />
           New Client
@@ -82,7 +98,10 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
           <TableBody>
             {clients.length === 0 && (
               <TableRow>
-                <TableCell colSpan={5} className='py-10 text-center text-muted-foreground'>
+                <TableCell
+                  colSpan={5}
+                  className='py-10 text-center text-muted-foreground'
+                >
                   No clients yet. Add your first client to get started.
                 </TableCell>
               </TableRow>
@@ -142,13 +161,16 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
         client={editTarget}
       />
 
-      <AlertDialog open={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(undefined)}>
+      <AlertDialog
+        open={!!deleteTarget}
+        onOpenChange={(o) => !o && setDeleteTarget(undefined)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete client?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete <strong>{deleteTarget?.name}</strong>. Any invoices
-              linked to this client will lose their client reference.
+              This will permanently delete <strong>{deleteTarget?.name}</strong>. Any
+              invoices linked to this client will lose their client reference.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -156,8 +178,10 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
             <AlertDialogAction
               onClick={confirmDelete}
               disabled={isPending}
-              className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
+              className='bg-destructive text-destructive-foreground
+                hover:bg-destructive/90'
             >
+              {isPending && <Spinner />}
               {isPending ? 'Deleting…' : 'Delete'}
             </AlertDialogAction>
           </AlertDialogFooter>

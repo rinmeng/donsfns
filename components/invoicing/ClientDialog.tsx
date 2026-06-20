@@ -5,8 +5,10 @@ import { useEffect, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { createClient, updateClient } from '@/actions/invoicing/clients';
+import { useRouter } from 'next/navigation';
+
 import type { Client } from '@/types/database';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
@@ -19,6 +21,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Spinner } from '@/components/ui/spinner';
 import { Text } from '@/components/Text';
 
 const schema = z.object({
@@ -37,6 +40,8 @@ interface Props {
 }
 
 export function ClientDialog({ open, onOpenChange, client }: Props) {
+  const router = useRouter();
+  const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<FormValues>({
@@ -69,16 +74,28 @@ export function ClientDialog({ open, onOpenChange, client }: Props) {
         address: values.address || null,
       };
 
-      const result = client
-        ? await updateClient(client.id, data)
-        : await createClient(data);
+      const res = client
+        ? await fetch(`/api/invoicing/clients/${client.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          })
+        : await fetch('/api/invoicing/clients', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
 
+      const result = await res.json();
       if (result.error) {
         form.setError('root', { message: result.error });
+        toast.error(result.error);
         return;
       }
       form.reset();
       onOpenChange(false);
+      router.refresh();
+      toast.success(client ? 'Client updated.' : 'Client created.');
     });
   }
 
@@ -143,7 +160,9 @@ export function ClientDialog({ open, onOpenChange, client }: Props) {
               )}
             />
             {form.formState.errors.root && (
-              <Text as='p' size='sm' className='text-destructive'>{form.formState.errors.root.message}</Text>
+              <Text as='p' size='sm' className='text-destructive'>
+                {form.formState.errors.root.message}
+              </Text>
             )}
             <div className='flex justify-end gap-2 pt-2'>
               <Button
@@ -155,6 +174,7 @@ export function ClientDialog({ open, onOpenChange, client }: Props) {
                 Cancel
               </Button>
               <Button type='submit' disabled={isPending}>
+                {isPending && <Spinner />}
                 {isPending ? 'Saving…' : client ? 'Save Changes' : 'Create Client'}
               </Button>
             </div>

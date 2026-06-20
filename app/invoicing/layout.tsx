@@ -4,7 +4,11 @@ import { InvoicingNav } from '@/components/invoicing/InvoicingNav';
 import { Text } from '@/components/Text';
 import { createClient } from '@/utils/supabase/server';
 
-export default async function InvoicingLayout({ children }: { children: React.ReactNode }) {
+export default async function InvoicingLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const supabase = await createClient();
   const {
     data: { user },

@@ -70,7 +70,8 @@ export function NavbarMobile({ open, onOpenChange }: NavbarMobileProps) {
             ))}
             <Button
               asChild
-              className={`w-1/2 bg-accent text-accent-foreground hover:bg-accent/90 fade-in-from-right ${getDelayClass(navLinks.length + 2)}`}
+              className={`w-1/2 bg-accent text-accent-foreground hover:bg-accent/90
+                fade-in-from-right ${getDelayClass(navLinks.length + 2)}`}
             >
               <Link href='/contact' onClick={() => onOpenChange(false)}>
                 Get a Quote <ArrowRight />

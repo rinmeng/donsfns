@@ -26,7 +26,9 @@ export const metadata: Metadata = {
     title: "Services | Don's Fences & Services",
     description:
       'Fencing, custom gates, wood milling, automotive, and cold storage rental. Enderby, BC contractor serving the BC interior.',
-    images: [{ url: '/don_4.jpg', width: 1200, height: 630, alt: 'Fence installation by Don' }],
+    images: [
+      { url: '/don_4.jpg', width: 1200, height: 630, alt: 'Fence installation by Don' },
+    ],
   },
 };
 

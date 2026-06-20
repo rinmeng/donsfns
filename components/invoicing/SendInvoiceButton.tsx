@@ -3,7 +3,9 @@
 import { CheckCircle2, Send } from 'lucide-react';
 import { useState, useTransition } from 'react';
 
-import { sendInvoice } from '@/actions/invoicing/send';
+import { useRouter } from 'next/navigation';
+
+import { useToast } from '@/hooks/use-toast';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,6 +36,8 @@ export function SendInvoiceButton({
   status,
   onError,
 }: Props) {
+  const router = useRouter();
+  const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [phase, setPhase] = useState<'idle' | 'sending' | 'sent'>('idle');
@@ -42,12 +46,18 @@ export function SendInvoiceButton({
     setConfirmOpen(false);
     setPhase('sending');
     startTransition(async () => {
-      const result = await sendInvoice(invoiceId);
+      const res = await fetch(`/api/invoicing/invoices/${invoiceId}/send`, {
+        method: 'POST',
+      });
+      const result = await res.json();
       if (result.error) {
         setPhase('idle');
         onError?.(result.error);
+        toast.error(result.error);
       } else {
         setPhase('sent');
+        router.refresh();
+        toast.success(`Invoice ${invoiceNumber} sent to ${recipientEmail}.`);
         setTimeout(() => setPhase('idle'), 2000);
       }
     });

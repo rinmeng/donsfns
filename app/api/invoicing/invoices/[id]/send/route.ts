@@ -1,20 +1,20 @@
-'use server';
-
 import { renderToBuffer, type DocumentProps } from '@react-pdf/renderer';
 import { createElement, type ReactElement } from 'react';
 import { Resend } from 'resend';
 
 import { revalidatePath } from 'next/cache';
+import { NextRequest, NextResponse } from 'next/server';
 
+import { InvoicePDF } from '@/components/invoicing/InvoicePDF';
 import { buildInvoiceEmailHtml } from '@/lib/invoicing/email';
 import type { Client, Invoice, InvoiceSnapshot, LineItem } from '@/types/database';
 import { createAdminClient } from '@/utils/supabase/server-admin';
 
-import { InvoicePDF } from '@/components/invoicing/InvoicePDF';
-
-export async function sendInvoice(
-  invoiceId: string
-): Promise<{ error?: string }> {
+export async function POST(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id: invoiceId } = await params;
   const supabase = createAdminClient();
 
   const { data: raw, error: invErr } = await supabase
@@ -23,7 +23,12 @@ export async function sendInvoice(
     .eq('id', invoiceId)
     .single();
 
-  if (invErr || !raw) return { error: invErr?.message ?? 'Invoice not found' };
+  if (invErr || !raw) {
+    return NextResponse.json(
+      { error: invErr?.message ?? 'Invoice not found' },
+      { status: 404 }
+    );
+  }
 
   const invoice = raw as unknown as Invoice & { clients: Client };
   const client = invoice.clients;
@@ -52,7 +57,10 @@ export async function sendInvoice(
       createElement(InvoicePDF, { snapshot }) as ReactElement<DocumentProps>
     );
   } catch (e) {
-    return { error: `PDF generation failed: ${(e as Error).message}` };
+    return NextResponse.json(
+      { error: `PDF generation failed: ${(e as Error).message}` },
+      { status: 500 }
+    );
   }
 
   const filePath = `invoices/${invoice.invoice_number}_${Date.now()}.pdf`;
@@ -60,7 +68,12 @@ export async function sendInvoice(
     .from('donsfns_invoices')
     .upload(filePath, pdfBuffer, { contentType: 'application/pdf', upsert: false });
 
-  if (uploadErr) return { error: `Storage upload failed: ${uploadErr.message}` };
+  if (uploadErr) {
+    return NextResponse.json(
+      { error: `Storage upload failed: ${uploadErr.message}` },
+      { status: 500 }
+    );
+  }
 
   const resend = new Resend(process.env.RESEND_API_KEY);
   const FROM_EMAIL = process.env.FROM_EMAIL ?? 'donsfences@web8th.com';
@@ -78,7 +91,12 @@ export async function sendInvoice(
     ],
   });
 
-  if (emailErr) return { error: `Email send failed: ${emailErr.message}` };
+  if (emailErr) {
+    return NextResponse.json(
+      { error: `Email send failed: ${emailErr.message}` },
+      { status: 500 }
+    );
+  }
 
   const now = new Date().toISOString();
 
@@ -100,16 +118,5 @@ export async function sendInvoice(
   revalidatePath(`/invoicing/invoices/${invoiceId}`);
   revalidatePath('/invoicing/invoices');
 
-  return {};
-}
-
-export async function getSignedPdfUrl(
-  pdfPath: string
-): Promise<{ url?: string; error?: string }> {
-  const supabase = createAdminClient();
-  const { data, error } = await supabase.storage
-    .from('donsfns_invoices')
-    .createSignedUrl(pdfPath, 3600);
-  if (error) return { error: error.message };
-  return { url: data.signedUrl };
+  return NextResponse.json({});
 }

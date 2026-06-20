@@ -4,11 +4,11 @@ import { format } from 'date-fns';
 import { Download, FileText } from 'lucide-react';
 import { useState, useTransition } from 'react';
 
-import { getSignedPdfUrl } from '@/actions/invoicing/send';
 import type { InvoiceEmailLog, InvoiceSnapshot } from '@/types/database';
 import { Text } from '@/components/Text';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 
@@ -24,7 +24,10 @@ export function SentHistory({ logs }: { logs: InvoiceEmailLog[] }) {
   function downloadPdf(log: InvoiceEmailLog) {
     if (!log.pdf_path) return;
     startTransition(async () => {
-      const { url, error } = await getSignedPdfUrl(log.pdf_path!);
+      const res = await fetch(
+        `/api/invoicing/invoices/${log.invoice_id}/pdf-url?pdf_path=${encodeURIComponent(log.pdf_path!)}`
+      );
+      const { url, error } = await res.json();
       if (error || !url) return;
       window.open(url, '_blank');
     });
@@ -45,9 +48,7 @@ export function SentHistory({ logs }: { logs: InvoiceEmailLog[] }) {
           <div key={log.id} className='flex gap-3'>
             <div className='mt-1 flex flex-col items-center'>
               <div className='h-2 w-2 rounded-full bg-foreground' />
-              {i < logs.length - 1 && (
-                <div className='mt-1 w-px flex-1 bg-border' />
-              )}
+              {i < logs.length - 1 && <div className='mt-1 w-px flex-1 bg-border' />}
             </div>
             <div className='flex-1 rounded-md border p-3'>
               <div className='flex flex-wrap items-start justify-between gap-2'>
@@ -75,7 +76,11 @@ export function SentHistory({ logs }: { logs: InvoiceEmailLog[] }) {
                       disabled={isPending}
                       onClick={() => downloadPdf(log)}
                     >
-                      <Download className='mr-1 h-3 w-3' />
+                      {isPending ? (
+                        <Spinner className='mr-1 h-3 w-3' />
+                      ) : (
+                        <Download className='mr-1 h-3 w-3' />
+                      )}
                       PDF
                     </Button>
                   )}
@@ -94,50 +99,91 @@ export function SentHistory({ logs }: { logs: InvoiceEmailLog[] }) {
           {snapshot && (
             <div className='space-y-4'>
               <div className='grid grid-cols-2 gap-2'>
-                <Text as='span' size='sm' variant='muted'>Issue Date</Text>
-                <Text as='span' size='sm'>{snapshot.issue_date}</Text>
-                <Text as='span' size='sm' variant='muted'>Client</Text>
-                <Text as='span' size='sm'>{snapshot.client.name}</Text>
-                <Text as='span' size='sm' variant='muted'>Email</Text>
-                <Text as='span' size='sm'>{snapshot.client.email}</Text>
+                <Text as='span' size='sm' variant='muted'>
+                  Issue Date
+                </Text>
+                <Text as='span' size='sm'>
+                  {snapshot.issue_date}
+                </Text>
+                <Text as='span' size='sm' variant='muted'>
+                  Client
+                </Text>
+                <Text as='span' size='sm'>
+                  {snapshot.client.name}
+                </Text>
+                <Text as='span' size='sm' variant='muted'>
+                  Email
+                </Text>
+                <Text as='span' size='sm'>
+                  {snapshot.client.email}
+                </Text>
               </div>
               <Separator />
               <div className='rounded-md border'>
-                <div className='grid grid-cols-[3fr_1fr_1.5fr_1.5fr] bg-muted/50 px-3 py-2 text-xs font-medium uppercase tracking-wide text-muted-foreground'>
-                  <Text as='span' size='xs'>Description</Text>
-                  <Text as='span' size='xs' className='text-right'>Qty</Text>
-                  <Text as='span' size='xs' className='text-right'>Rate</Text>
-                  <Text as='span' size='xs' className='text-right'>Amount</Text>
+                <div
+                  className='grid grid-cols-[3fr_1fr_1.5fr_1.5fr] bg-muted/50 px-3 py-2
+                    text-xs font-medium uppercase tracking-wide text-muted-foreground'
+                >
+                  <Text as='span' size='xs'>
+                    Description
+                  </Text>
+                  <Text as='span' size='xs' className='text-right'>
+                    Qty
+                  </Text>
+                  <Text as='span' size='xs' className='text-right'>
+                    Rate
+                  </Text>
+                  <Text as='span' size='xs' className='text-right'>
+                    Amount
+                  </Text>
                 </div>
                 {snapshot.line_items.map((li, i) => (
                   <div
                     key={i}
                     className='grid grid-cols-[3fr_1fr_1.5fr_1.5fr] border-t px-3 py-2'
                   >
-                    <Text as='span' size='sm'>{li.description}</Text>
-                    <Text as='span' size='sm' className='text-right'>{li.quantity}</Text>
-                    <Text as='span' size='sm' className='text-right'>${li.rate.toFixed(2)}</Text>
-                    <Text as='span' size='sm' className='text-right'>${li.amount.toFixed(2)}</Text>
+                    <Text as='span' size='sm'>
+                      {li.description}
+                    </Text>
+                    <Text as='span' size='sm' className='text-right'>
+                      {li.quantity}
+                    </Text>
+                    <Text as='span' size='sm' className='text-right'>
+                      ${li.rate.toFixed(2)}
+                    </Text>
+                    <Text as='span' size='sm' className='text-right'>
+                      ${li.amount.toFixed(2)}
+                    </Text>
                   </div>
                 ))}
               </div>
               <div className='flex flex-col items-end gap-1.5'>
                 <div className='flex w-48 justify-between'>
-                  <Text as='span' size='sm' variant='muted'>Subtotal</Text>
-                  <Text as='span' size='sm'>${snapshot.subtotal.toFixed(2)}</Text>
+                  <Text as='span' size='sm' variant='muted'>
+                    Subtotal
+                  </Text>
+                  <Text as='span' size='sm'>
+                    ${snapshot.subtotal.toFixed(2)}
+                  </Text>
                 </div>
                 {snapshot.tax_rate > 0 && (
                   <div className='flex w-48 justify-between'>
                     <Text as='span' size='sm' variant='muted'>
                       Tax ({(snapshot.tax_rate * 100).toFixed(0)}%)
                     </Text>
-                    <Text as='span' size='sm'>${snapshot.tax_amount.toFixed(2)}</Text>
+                    <Text as='span' size='sm'>
+                      ${snapshot.tax_amount.toFixed(2)}
+                    </Text>
                   </div>
                 )}
                 <Separator className='w-48' />
                 <div className='flex w-48 justify-between font-semibold'>
-                  <Text as='span' size='sm'>Total</Text>
-                  <Text as='span' size='sm'>${snapshot.total.toFixed(2)}</Text>
+                  <Text as='span' size='sm'>
+                    Total
+                  </Text>
+                  <Text as='span' size='sm'>
+                    ${snapshot.total.toFixed(2)}
+                  </Text>
                 </div>
               </div>
               {snapshot.notes && (

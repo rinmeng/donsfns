@@ -53,10 +53,7 @@ export function SecondaryServices() {
 
         <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
           {services.map(({ icon: Icon, title, description }, index) => (
-            <Card
-              key={title}
-              className={`fade-in-scale ${getDelayClass(index + 2)}`}
-            >
+            <Card key={title} className={`fade-in-scale ${getDelayClass(index + 2)}`}>
               <CardHeader className='pb-2'>
                 <Icon className='mb-2 h-7 w-7 text-muted-foreground' />
                 <Text variant='hd-sm'>{title}</Text>

@@ -11,7 +11,8 @@ export function AboutTeaser() {
       <div className='mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 items-center gap-10 md:grid-cols-2'>
           <div
-            className={`fade-in-editorial ${getDelayClass(0)} relative h-[480px] overflow-hidden rounded-lg`}
+            className={`fade-in-editorial ${getDelayClass(0)} relative h-[480px]
+              overflow-hidden rounded-lg`}
           >
             <Image
               src='/don_1.jpg'
@@ -24,7 +25,8 @@ export function AboutTeaser() {
           <div className='flex flex-col gap-6'>
             <Text
               variant='hd-xxl'
-              className={`fade-in-from-right ${getDelayClass(1)} font-display tracking-wide`}
+              className={`fade-in-from-right ${getDelayClass(1)} font-display
+                tracking-wide`}
             >
               Building Fences Since 2002. Not Cutting Corners.
             </Text>
@@ -33,9 +35,9 @@ export function AboutTeaser() {
               variant='muted'
               className={`fade-in-from-right ${getDelayClass(3)}`}
             >
-              I'm Don. I've been building fences in the BC interior since 2002 —
-              from highway barriers and BC Parks projects to ranch fences and residential
-              gates across the Okanagan.
+              I'm Don. I've been building fences in the BC interior since 2002 — from
+              highway barriers and BC Parks projects to ranch fences and residential gates
+              across the Okanagan.
             </Text>
             <Text
               size='lg'

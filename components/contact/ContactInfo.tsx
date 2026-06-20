@@ -64,9 +64,7 @@ export function ContactInfo() {
           </div>
         </div>
 
-        <div
-          className={`fade-in-from-bottom ${getDelayClass(4)} flex items-start gap-3`}
-        >
+        <div className={`fade-in-from-bottom ${getDelayClass(4)} flex items-start gap-3`}>
           <MapPin className='mt-1 h-5 w-5 shrink-0 text-muted-foreground' />
           <div className='flex flex-col gap-1'>
             <Text variant='label' size='sm'>

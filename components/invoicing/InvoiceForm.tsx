@@ -8,8 +8,8 @@ import { useEffect, useState, useTransition } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 
-import { createInvoice, updateInvoice } from '@/actions/invoicing/invoices';
 import type { Client, Invoice } from '@/types/database';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -30,6 +30,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
 import { Text } from '@/components/Text';
 
@@ -57,6 +58,7 @@ interface Props {
 
 export function InvoiceForm({ clients, invoice }: Props) {
   const router = useRouter();
+  const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
   const [dateOpen, setDateOpen] = useState(false);
 
@@ -118,18 +120,32 @@ export function InvoiceForm({ clients, invoice }: Props) {
       };
 
       if (invoice) {
-        const result = await updateInvoice(invoice.id, payload);
+        const res = await fetch(`/api/invoicing/invoices/${invoice.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await res.json();
         if (result.error) {
           form.setError('root', { message: result.error });
+          toast.error(result.error);
           return;
         }
+        toast.success('Invoice saved.');
         router.push(`/invoicing/invoices/${invoice.id}`);
       } else {
-        const result = await createInvoice(payload);
+        const res = await fetch('/api/invoicing/invoices', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await res.json();
         if (result.error) {
           form.setError('root', { message: result.error });
+          toast.error(result.error);
           return;
         }
+        toast.success('Invoice created.');
         router.push(`/invoicing/invoices/${result.id}`);
       }
     });
@@ -141,8 +157,7 @@ export function InvoiceForm({ clients, invoice }: Props) {
     (lineItemErrors && !Array.isArray(lineItemErrors)
       ? (lineItemErrors as { message?: string }).message
       : undefined);
-  const hasFieldErrors =
-    Array.isArray(lineItemErrors) && lineItemErrors.some(Boolean);
+  const hasFieldErrors = Array.isArray(lineItemErrors) && lineItemErrors.some(Boolean);
 
   return (
     <Form {...form}>
@@ -249,7 +264,9 @@ export function InvoiceForm({ clients, invoice }: Props) {
 
         <div>
           <div className='mb-3 flex items-center justify-between'>
-            <Text as='p' size='sm' className='font-medium'>Line Items</Text>
+            <Text as='p' size='sm' className='font-medium'>
+              Line Items
+            </Text>
             <Button
               type='button'
               variant='outline'
@@ -389,7 +406,7 @@ export function InvoiceForm({ clients, invoice }: Props) {
           {(lineItemArrayError || hasFieldErrors) && (
             <Text as='p' size='sm' className='mt-1 text-destructive'>
               {lineItemArrayError ?? 'Please fill in all required line item fields.'}
-          </Text>
+            </Text>
           )}
         </div>
 
@@ -430,11 +447,14 @@ export function InvoiceForm({ clients, invoice }: Props) {
         />
 
         {form.formState.errors.root && (
-          <Text as='p' size='sm' className='text-destructive'>{form.formState.errors.root.message}</Text>
+          <Text as='p' size='sm' className='text-destructive'>
+            {form.formState.errors.root.message}
+          </Text>
         )}
 
         <div className='flex gap-3'>
           <Button type='submit' disabled={isPending}>
+            {isPending && <Spinner />}
             {isPending ? 'Saving…' : invoice ? 'Save Changes' : 'Create Invoice'}
           </Button>
           <Button

@@ -1,11 +1,4 @@
-import {
-  Document,
-  Link,
-  Page,
-  StyleSheet,
-  Text,
-  View,
-} from '@react-pdf/renderer';
+import { Document, Link, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 import type { InvoiceSnapshot } from '@/types/database';
 
@@ -219,8 +212,17 @@ function fmtDate(d: string) {
 }
 
 export function InvoicePDF({ snapshot }: { snapshot: InvoiceSnapshot }) {
-  const { invoice_number, issue_date, line_items, subtotal, tax_rate, tax_amount, total, notes, client } =
-    snapshot;
+  const {
+    invoice_number,
+    issue_date,
+    line_items,
+    subtotal,
+    tax_rate,
+    tax_amount,
+    total,
+    notes,
+    client,
+  } = snapshot;
 
   const taxPct = tax_rate ? (tax_rate * 100).toFixed(0) : '0';
 
@@ -232,7 +234,9 @@ export function InvoicePDF({ snapshot }: { snapshot: InvoiceSnapshot }) {
           <View>
             <Text style={styles.companyName}>Don's Fences & Services</Text>
             <Link src='https://maps.google.com/?q=67+Enderby+Mabel+Lk+Rd+Enderby+BC+V0E+1V4'>
-              <Text style={styles.companyTagline}>67 Enderby Mabel Lk Rd, Enderby, BC V0E 1V4</Text>
+              <Text style={styles.companyTagline}>
+                67 Enderby Mabel Lk Rd, Enderby, BC V0E 1V4
+              </Text>
             </Link>
             <Link src='https://donsfences.ca'>
               <Text style={styles.companyTagline}>donsfences.ca</Text>
@@ -249,13 +253,9 @@ export function InvoicePDF({ snapshot }: { snapshot: InvoiceSnapshot }) {
           <View>
             <Text style={styles.billToLabel}>Bill To</Text>
             <Text style={styles.clientName}>{client.name}</Text>
-            {client.address && (
-              <Text style={styles.clientDetail}>{client.address}</Text>
-            )}
+            {client.address && <Text style={styles.clientDetail}>{client.address}</Text>}
             <Text style={styles.clientDetail}>{client.email}</Text>
-            {client.phone && (
-              <Text style={styles.clientDetail}>{client.phone}</Text>
-            )}
+            {client.phone && <Text style={styles.clientDetail}>{client.phone}</Text>}
           </View>
           <View style={styles.dateBlock}>
             <Text style={styles.dateLabel}>Issue Date</Text>
@@ -309,7 +309,9 @@ export function InvoicePDF({ snapshot }: { snapshot: InvoiceSnapshot }) {
         <View style={styles.footer}>
           <Text style={styles.footerText}>Don's Fences & Services · </Text>
           <Link src='https://maps.google.com/?q=67+Enderby+Mabel+Lk+Rd+Enderby+BC+V0E+1V4'>
-            <Text style={styles.footerText}>67 Enderby Mabel Lk Rd, Enderby, BC V0E 1V4</Text>
+            <Text style={styles.footerText}>
+              67 Enderby Mabel Lk Rd, Enderby, BC V0E 1V4
+            </Text>
           </Link>
           <Text style={styles.footerText}> · </Text>
           <Link src='https://donsfences.ca'>
