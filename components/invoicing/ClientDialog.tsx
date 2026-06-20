@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { PhoneInput, formatPhone } from '@/components/ui/phone-input';
 import { Textarea } from '@/components/ui/textarea';
 import { Spinner } from '@/components/ui/spinner';
 import { Text } from '@/components/Text';
@@ -27,7 +28,12 @@ import { Text } from '@/components/Text';
 const schema = z.object({
   name: z.string().min(1, 'Name is required'),
   email: z.string().email('Valid email required'),
-  phone: z.string().optional(),
+  phone: z
+    .string()
+    .optional()
+    .refine((v) => !v || /^\d{3}-\d{3}-\d{4}$/.test(v), {
+      message: 'Please enter a complete 10-digit phone number',
+    }),
   address: z.string().optional(),
 });
 
@@ -59,7 +65,7 @@ export function ClientDialog({ open, onOpenChange, client }: Props) {
       form.reset({
         name: client?.name ?? '',
         email: client?.email ?? '',
-        phone: client?.phone ?? '',
+        phone: client?.phone ? formatPhone(client.phone) : '',
         address: client?.address ?? '',
       });
     }
@@ -140,7 +146,13 @@ export function ClientDialog({ open, onOpenChange, client }: Props) {
                 <FormItem>
                   <FormLabel>Phone</FormLabel>
                   <FormControl>
-                    <Input placeholder='+1 250-555-0000' {...field} />
+                    <PhoneInput
+                      value={field.value}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
