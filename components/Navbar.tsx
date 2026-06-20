@@ -7,12 +7,14 @@ import { useState } from 'react';
 
 import {
   Button,
+  Separator,
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui';
+import { LoginDialog } from './LoginDialog';
 import { ModeToggle } from './ModeToggle';
 import { Logo } from './Logo';
 import { getDelayClass } from '@/utils/animations';
@@ -62,6 +64,13 @@ export function Navbar() {
           <ModeToggle
             className={`fade-in-from-right ${getDelayClass(navLinks.length + 3)}`}
           />
+          <div
+            className={`h-5 w-px bg-border fade-in-from-right
+              ${getDelayClass(navLinks.length + 3)}`}
+          />
+          <LoginDialog
+            className={`fade-in-from-right ${getDelayClass(navLinks.length + 4)}`}
+          />
         </div>
 
         <div className='lg:hidden'>
@@ -106,6 +115,13 @@ export function Navbar() {
                 </Button>
                 <ModeToggle
                   className={`fade-in-from-right ${getDelayClass(navLinks.length + 3)}`}
+                />
+                <Separator
+                  className={`w-full fade-in-from-right ${getDelayClass( navLinks.length +
+                    4 )}`}
+                />
+                <LoginDialog
+                  className={`fade-in-from-right ${getDelayClass(navLinks.length + 4)}`}
                 />
               </div>
             </SheetContent>

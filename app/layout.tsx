@@ -6,6 +6,7 @@ import { Navbar } from '@/components/Navbar';
 import { SiteFooter } from '@/components/SiteFooter';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
+import { AuthProvider } from '@/contexts/AuthContext';
 import { ToastProvider } from '@/contexts/ToastContext';
 
 import './globals.css';
@@ -214,11 +215,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         <ThemeProvider attribute='class' defaultTheme='light' enableSystem>
           <ToastProvider>
-            <Navbar />
-            <main className='overflow-x-hidden'>{children}</main>
-            <SiteFooter />
-            <Toaster />
-            <Analytics />
+            <AuthProvider>
+              <Navbar />
+              <main className='overflow-x-hidden'>{children}</main>
+              <SiteFooter />
+              <Toaster />
+              <Analytics />
+            </AuthProvider>
           </ToastProvider>
         </ThemeProvider>
       </body>
