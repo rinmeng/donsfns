@@ -278,7 +278,8 @@ export function InvoiceForm({ clients, invoice }: Props) {
             </Button>
           </div>
 
-          <div className='border'>
+          <div className='overflow-x-auto border'>
+            <div className='min-w-[540px]'>
             <div
               className='grid grid-cols-[3fr_1fr_1.5fr_1.5fr_40px] gap-px bg-border
                 text-xs font-medium uppercase tracking-wide text-muted-foreground'
@@ -401,6 +402,7 @@ export function InvoiceForm({ clients, invoice }: Props) {
                 </div>
               </div>
             ))}
+          </div>
           </div>
 
           {(lineItemArrayError || hasFieldErrors) && (

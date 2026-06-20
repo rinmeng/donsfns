@@ -183,43 +183,45 @@ export default async function InvoiceDetailPage({
         </div>
 
         {/* Line items */}
-        <div className='rounded-md border'>
-          <div
-            className='grid grid-cols-[3fr_1fr_1.5fr_1.5fr] bg-muted/50 px-4 py-2.5
-              text-xs font-medium uppercase tracking-wide text-muted-foreground'
-          >
-            <Text as='span' size='xs'>
-              Description
-            </Text>
-            <Text as='span' size='xs' className='text-right'>
-              Qty
-            </Text>
-            <Text as='span' size='xs' className='text-right'>
-              Rate
-            </Text>
-            <Text as='span' size='xs' className='text-right'>
-              Amount
-            </Text>
-          </div>
-          {invoice.line_items.map((item, i) => (
+        <div className='overflow-x-auto rounded-md border'>
+          <div className='min-w-[540px]'>
             <div
-              key={i}
-              className='grid grid-cols-[3fr_1fr_1.5fr_1.5fr] border-t px-4 py-3'
+              className='grid grid-cols-[3fr_1fr_1.5fr_1.5fr] bg-muted/50 px-4 py-2.5
+                text-xs font-medium uppercase tracking-wide text-muted-foreground'
             >
-              <Text as='span' size='sm'>
-                {item.description}
+              <Text as='span' size='xs'>
+                Description
               </Text>
-              <Text as='span' size='sm' className='text-right'>
-                {item.quantity}
+              <Text as='span' size='xs' className='text-right'>
+                Qty
               </Text>
-              <Text as='span' size='sm' className='text-right'>
-                ${item.rate.toFixed(2)}
+              <Text as='span' size='xs' className='text-right'>
+                Rate
               </Text>
-              <Text as='span' size='sm' className='text-right font-medium'>
-                ${item.amount.toFixed(2)}
+              <Text as='span' size='xs' className='text-right'>
+                Amount
               </Text>
             </div>
-          ))}
+            {invoice.line_items.map((item, i) => (
+              <div
+                key={i}
+                className='grid grid-cols-[3fr_1fr_1.5fr_1.5fr] border-t px-4 py-3'
+              >
+                <Text as='span' size='sm'>
+                  {item.description}
+                </Text>
+                <Text as='span' size='sm' className='text-right'>
+                  {item.quantity}
+                </Text>
+                <Text as='span' size='sm' className='text-right'>
+                  ${item.rate.toFixed(2)}
+                </Text>
+                <Text as='span' size='sm' className='text-right font-medium'>
+                  ${item.amount.toFixed(2)}
+                </Text>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Totals */}

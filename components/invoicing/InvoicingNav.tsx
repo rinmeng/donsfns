@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -12,6 +13,10 @@ const links = [
 
 export function InvoicingNav() {
   const path = usePathname();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [path]);
 
   return (
     <nav className='mb-6 flex gap-1 border-b pb-0'>
