@@ -3,7 +3,7 @@ import { ChevronLeft, Info, Pencil } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import type { Client, Invoice, InvoiceEmailLog } from '@/types/database';
+import type { Client, Invoice, InvoiceEmailLog, InvoiceSnapshot, LineItem } from '@/types/database';
 import { SentHistory } from '@/components/invoicing/SentHistory';
 import { SendInvoiceButton } from '@/components/invoicing/SendInvoiceButton';
 import { Text } from '@/components/Text';
@@ -36,10 +36,31 @@ export default async function InvoiceDetailPage({
   const logs = (logData ?? []) as unknown as InvoiceEmailLog[];
 
   const latestLog = logs[0] ?? null;
-  const isStale =
-    invoice.status === 'sent' &&
-    latestLog !== null &&
-    new Date(invoice.updated_at) > new Date(latestLog.sent_at);
+  const latestSnapshot = latestLog ? (latestLog.snapshot as unknown as InvoiceSnapshot) : null;
+
+  const isStale = (() => {
+    if (invoice.status !== 'sent' || !latestSnapshot) return false;
+    const cents = (n: number) => Math.round(n * 100);
+    const serializeItems = (items: LineItem[]) =>
+      JSON.stringify(
+        items.map((li) => ({
+          description: li.description.trim(),
+          quantity: li.quantity,
+          rate: cents(li.rate),
+          amount: cents(li.amount),
+        }))
+      );
+    return (
+      cents(invoice.subtotal) !== cents(latestSnapshot.subtotal) ||
+      cents(invoice.tax_amount) !== cents(latestSnapshot.tax_amount) ||
+      cents(invoice.total) !== cents(latestSnapshot.total) ||
+      invoice.tax_rate !== latestSnapshot.tax_rate ||
+      invoice.issue_date !== latestSnapshot.issue_date ||
+      (invoice.notes ?? '') !== (latestSnapshot.notes ?? '') ||
+      client.email !== latestSnapshot.client.email ||
+      serializeItems(invoice.line_items) !== serializeItems(latestSnapshot.line_items)
+    );
+  })();
 
   return (
     <div className='space-y-4'>
