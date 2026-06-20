@@ -97,7 +97,7 @@ export function SentHistory({ logs }: { logs: InvoiceEmailLog[] }) {
       </div>
 
       <Dialog open={!!snapshot} onOpenChange={(o) => !o && setSnapshot(null)}>
-        <DialogContent className='max-h-[80vh] max-w-2xl overflow-y-auto'>
+        <DialogContent className='max-h-[80vh] overflow-y-auto'>
           <DialogHeader>
             <DialogTitle>Invoice Snapshot — {snapshot?.invoice_number}</DialogTitle>
           </DialogHeader>
