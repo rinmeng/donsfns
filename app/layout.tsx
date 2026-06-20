@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Bebas_Neue, IBM_Plex_Mono, Lora, Plus_Jakarta_Sans } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 
+import { MainWrapper } from '@/components/MainWrapper';
 import { Navbar } from '@/components/Navbar';
 import { SiteFooter } from '@/components/SiteFooter';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -217,7 +218,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ToastProvider>
             <AuthProvider>
               <Navbar />
-              <main className='overflow-x-hidden'>{children}</main>
+              <MainWrapper>{children}</MainWrapper>
               <SiteFooter />
               <Toaster />
               <Analytics />

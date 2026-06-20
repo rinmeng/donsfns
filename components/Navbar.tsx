@@ -1,23 +1,18 @@
 'use client';
 
-import { ArrowRight, Menu } from 'lucide-react';
+import { ArrowRight, Receipt } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
-import {
-  Button,
-  Separator,
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui';
+import { Button } from '@/components/ui';
 import { LoginDialog } from './LoginDialog';
 import { ModeToggle } from './ModeToggle';
 import { Logo } from './Logo';
+import { NavbarMobile } from './NavbarMobile';
+import { useAuth } from '@/hooks/use-auth';
 import { getDelayClass } from '@/utils/animations';
+import { Text } from './Text';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -30,103 +25,75 @@ const navLinks = [
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { user } = useAuth();
 
   return (
-    <nav className='fixed z-50 w-full border-b bg-background'>
-      <div
-        className='mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6
-          lg:px-8'
-      >
-        <Logo
-          className={`fade-in-from-right ${getDelayClass(1)}`}
-          onClick={() => setOpen(false)}
-        />
+    <nav className='fixed z-50 w-full border-b bg-background t200e'>
+      <div className='mx-auto flex max-w-7xl flex-col px-4 sm:px-6 lg:px-8'>
+        {/* Main row */}
+        <div className='flex items-center justify-between py-4'>
+          <Logo
+            className={`fade-in-from-right ${getDelayClass(1)}`}
+            onClick={() => setOpen(false)}
+          />
 
-        <div className='hidden items-center gap-4 lg:flex'>
-          {navLinks.map((link, index) => (
+          <div className='hidden items-center gap-4 lg:flex t200e'>
+            {navLinks.map((link, index) => (
+              <Button
+                key={link.href}
+                variant={pathname === link.href ? 'default' : 'outline'}
+                className={`fade-in-from-right ${getDelayClass(index + 2)}`}
+                asChild
+              >
+                <Link href={link.href}>{link.label}</Link>
+              </Button>
+            ))}
             <Button
-              key={link.href}
-              variant={pathname === link.href ? 'secondary' : 'ghost'}
-              className={`fade-in-from-right ${getDelayClass(index + 2)}`}
+              asChild
+              className={`bg-accent text-accent-foreground hover:bg-accent/90
+                fade-in-from-right ${getDelayClass(navLinks.length + 2)}`}
+            >
+              <Link href='/contact'>
+                Get a Quote <ArrowRight />
+              </Link>
+            </Button>
+            <ModeToggle
+              className={`fade-in-from-right ${getDelayClass(navLinks.length + 3)}`}
+            />
+            <div
+              className={`h-5 w-px bg-border fade-in-from-right
+                ${getDelayClass(navLinks.length + 3)}`}
+            />
+            <LoginDialog
+              className={`fade-in-from-right ${getDelayClass(navLinks.length + 4)}`}
+            />
+          </div>
+
+          <NavbarMobile open={open} onOpenChange={setOpen} />
+        </div>
+
+        {/* Invoicing row — desktop only, visible when logged in */}
+        {user && (
+          <div
+            className='fade-in-from-right hidden border-t py-2 lg:flex justify-center
+              gap-2 items-center flex-col'
+          >
+            <Text variant='default' size='sm'>
+              Welcome, <span className='font-bold'>Don</span>. What would you like to do
+              today?
+            </Text>
+            <Button
+              variant={pathname === '/invoicing' ? 'default' : 'outline'}
+              size='sm'
               asChild
             >
-              <Link href={link.href}>{link.label}</Link>
+              <Link href='/invoicing'>
+                <Receipt className='h-4 w-4' />
+                Invoicing
+              </Link>
             </Button>
-          ))}
-          <Button
-            asChild
-            className={`fade-in-from-right ${getDelayClass(navLinks.length + 2)}`}
-          >
-            <Link href='/contact'>
-              Get a Quote <ArrowRight />
-            </Link>
-          </Button>
-          <ModeToggle
-            className={`fade-in-from-right ${getDelayClass(navLinks.length + 3)}`}
-          />
-          <div
-            className={`h-5 w-px bg-border fade-in-from-right
-              ${getDelayClass(navLinks.length + 3)}`}
-          />
-          <LoginDialog
-            className={`fade-in-from-right ${getDelayClass(navLinks.length + 4)}`}
-          />
-        </div>
-
-        <div className='lg:hidden'>
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant='outline'
-                className={`fade-in-from-right ${getDelayClass(2)}`}
-                size='icon'
-              >
-                <Menu className='h-6 w-6' />
-                <span className='sr-only'>Toggle menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side='right' className='w-75 sm:w-100'>
-              <SheetHeader>
-                <SheetTitle>
-                  <Logo onClick={() => setOpen(false)} />
-                </SheetTitle>
-              </SheetHeader>
-              <div className='mt-6 flex flex-col items-center gap-4'>
-                {navLinks.map((link, index) => (
-                  <Button
-                    key={link.href}
-                    variant={pathname === link.href ? 'secondary' : 'ghost'}
-                    className={`w-1/2 fade-in-from-right ${getDelayClass(index + 2)}`}
-                    asChild
-                  >
-                    <Link href={link.href} onClick={() => setOpen(false)}>
-                      {link.label}
-                    </Link>
-                  </Button>
-                ))}
-                <Button
-                  asChild
-                  className={`w-1/2 fade-in-from-right ${getDelayClass( navLinks.length +
-                    2 )}`}
-                >
-                  <Link href='/contact' onClick={() => setOpen(false)}>
-                    Get a Quote <ArrowRight />
-                  </Link>
-                </Button>
-                <ModeToggle
-                  className={`fade-in-from-right ${getDelayClass(navLinks.length + 3)}`}
-                />
-                <Separator
-                  className={`w-full fade-in-from-right ${getDelayClass( navLinks.length +
-                    4 )}`}
-                />
-                <LoginDialog
-                  className={`fade-in-from-right ${getDelayClass(navLinks.length + 4)}`}
-                />
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
+          </div>
+        )}
       </div>
     </nav>
   );

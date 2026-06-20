@@ -5,8 +5,16 @@
 @custom-variant dark (&:is(.dark *));
 
 @layer components {
+  .t200e {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
   .nb-padding {
     @apply py-24;
+  }
+
+  .nb-padding-authed {
+    @apply pt-24;
   }
 
   .fade-in-from-bottom {
