@@ -1,13 +1,14 @@
 'use client';
 
 import { format } from 'date-fns';
-import { CalendarIcon, Eye, Pencil, Plus, Search, Trash2, X } from 'lucide-react';
+import { CalendarIcon, Eye, Pencil, Plus, Search, Send, Trash2, X } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState, useTransition } from 'react';
 
 import type { Client, Invoice } from '@/types/database';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -47,8 +48,15 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
+interface LatestLog {
+  sent_at: string;
+  recipient_email: string;
+}
+
 interface InvoiceRow extends Invoice {
   clients: Client;
+  isStale: boolean;
+  latestLog: LatestLog | null;
 }
 
 type SearchBy = 'invoice_number' | 'client' | 'date' | 'status';
@@ -57,6 +65,7 @@ export function InvoicesTable({ invoices }: { invoices: InvoiceRow[] }) {
   const router = useRouter();
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
+  const [sendingId, setSendingId] = useState<string | null>(null);
 
   const [searchBy, setSearchBy] = useState<SearchBy>('invoice_number');
   const [invYear, setInvYear] = useState('');
@@ -108,7 +117,9 @@ export function InvoicesTable({ invoices }: { invoices: InvoiceRow[] }) {
         return invoices.filter((inv) => inv.issue_date === dateStr);
       }
       case 'status':
-        return statusValue ? invoices.filter((inv) => inv.status === statusValue) : invoices;
+        return statusValue
+          ? invoices.filter((inv) => inv.status === statusValue)
+          : invoices;
       default:
         return invoices;
     }
@@ -127,14 +138,36 @@ export function InvoicesTable({ invoices }: { invoices: InvoiceRow[] }) {
     });
   }
 
+  async function handleSend(id: string) {
+    setSendingId(id);
+    try {
+      const res = await fetch(`/api/invoicing/invoices/${id}/send`, { method: 'POST' });
+      const result = await res.json();
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        router.refresh();
+        toast.success('Invoice sent.');
+      }
+    } finally {
+      setSendingId(null);
+    }
+  }
+
   return (
     <div className='space-y-4'>
       {/* Search bar */}
-      <div className='flex items-center gap-2 rounded-lg border bg-background px-3 py-2 shadow-sm'>
+      <div
+        className='flex items-center gap-2 rounded-lg border bg-background px-3 py-2
+          shadow-sm'
+      >
         <Search className='h-4 w-4 shrink-0 text-muted-foreground' />
 
         <Select value={searchBy} onValueChange={handleSearchByChange}>
-          <SelectTrigger className='h-auto w-auto min-w-24 border-0 p-0 text-sm font-medium shadow-none focus:ring-0 focus-visible:ring-0'>
+          <SelectTrigger
+            className='h-auto w-auto min-w-24 border-0 p-0 text-sm font-medium shadow-none
+              focus:ring-0 focus-visible:ring-0'
+          >
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -149,9 +182,12 @@ export function InvoicesTable({ invoices }: { invoices: InvoiceRow[] }) {
 
         {searchBy === 'invoice_number' && (
           <div className='flex flex-1 items-center'>
-            <span className='select-none font-mono text-sm text-muted-foreground'>INV-</span>
+            <span className='select-none font-mono text-sm text-muted-foreground'>
+              INV-
+            </span>
             <input
-              className='w-14 bg-transparent font-mono text-sm outline-none placeholder:text-muted-foreground/50'
+              className='w-14 bg-transparent font-mono text-sm outline-none
+                placeholder:text-muted-foreground/50'
               placeholder='2025'
               maxLength={4}
               value={invYear}
@@ -159,7 +195,8 @@ export function InvoicesTable({ invoices }: { invoices: InvoiceRow[] }) {
             />
             <span className='select-none font-mono text-sm text-muted-foreground'>-</span>
             <input
-              className='w-12 bg-transparent font-mono text-sm outline-none placeholder:text-muted-foreground/50'
+              className='w-12 bg-transparent font-mono text-sm outline-none
+                placeholder:text-muted-foreground/50'
               placeholder='001'
               maxLength={4}
               value={invNum}
@@ -170,7 +207,10 @@ export function InvoicesTable({ invoices }: { invoices: InvoiceRow[] }) {
 
         {searchBy === 'client' && (
           <Select value={clientId} onValueChange={setClientId}>
-            <SelectTrigger className='h-auto flex-1 border-0 p-0 text-sm shadow-none focus:ring-0 focus-visible:ring-0'>
+            <SelectTrigger
+              className='h-auto flex-1 border-0 p-0 text-sm shadow-none focus:ring-0
+                focus-visible:ring-0'
+            >
               <SelectValue placeholder='Select a client…' />
             </SelectTrigger>
             <SelectContent>
@@ -186,7 +226,9 @@ export function InvoicesTable({ invoices }: { invoices: InvoiceRow[] }) {
         {searchBy === 'date' && (
           <Popover open={dateOpen} onOpenChange={setDateOpen}>
             <PopoverTrigger asChild>
-              <button className='flex flex-1 items-center gap-2 text-left text-sm outline-none'>
+              <button
+                className='flex flex-1 items-center gap-2 text-left text-sm outline-none'
+              >
                 <CalendarIcon className='h-4 w-4 shrink-0 text-muted-foreground' />
                 {dateValue ? (
                   <span>{format(dateValue, 'MMM d, yyyy')}</span>
@@ -211,7 +253,10 @@ export function InvoicesTable({ invoices }: { invoices: InvoiceRow[] }) {
 
         {searchBy === 'status' && (
           <Select value={statusValue} onValueChange={setStatusValue}>
-            <SelectTrigger className='h-auto flex-1 border-0 p-0 text-sm shadow-none focus:ring-0 focus-visible:ring-0'>
+            <SelectTrigger
+              className='h-auto flex-1 border-0 p-0 text-sm shadow-none focus:ring-0
+                focus-visible:ring-0'
+            >
               <SelectValue placeholder='Select a status…' />
             </SelectTrigger>
             <SelectContent>
@@ -225,7 +270,8 @@ export function InvoicesTable({ invoices }: { invoices: InvoiceRow[] }) {
           <Button
             variant='ghost'
             size='icon'
-            className='ml-auto h-7 w-7 shrink-0 text-muted-foreground hover:text-foreground'
+            className='ml-auto h-7 w-7 shrink-0 text-muted-foreground
+              hover:text-foreground'
             onClick={clearSearch}
           >
             <X className='h-3.5 w-3.5' />
@@ -256,106 +302,217 @@ export function InvoicesTable({ invoices }: { invoices: InvoiceRow[] }) {
               <TableHead>Date</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className='text-right'>Total</TableHead>
-              <TableHead className='w-28' />
+              <TableHead />
             </TableRow>
           </TableHeader>
           <TableBody>
             {filtered.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} className='py-10 text-center text-muted-foreground'>
+                <TableCell
+                  colSpan={6}
+                  className='py-10 text-center text-muted-foreground'
+                >
                   {hasSearch
                     ? 'No invoices match your search.'
                     : 'No invoices yet. Create your first invoice to get started.'}
                 </TableCell>
               </TableRow>
             )}
-            {filtered.map((inv) => (
-              <TableRow key={inv.id}>
-                <TableCell className='font-mono text-sm font-medium'>
-                  {inv.invoice_number}
-                </TableCell>
-                <TableCell>{inv.clients?.name ?? '—'}</TableCell>
-                <TableCell className='text-muted-foreground'>
-                  {format(new Date(inv.issue_date + 'T00:00:00'), 'MMM d, yyyy')}
-                </TableCell>
-                <TableCell>
-                  <Badge
-                    className='font-mono'
-                    variant={inv.status === 'sent' ? 'default' : 'secondary'}
-                  >
-                    {inv.status}
-                  </Badge>
-                </TableCell>
-                <TableCell className='text-right font-medium'>
-                  ${inv.total.toFixed(2)}
-                </TableCell>
-                <TableCell>
-                  <div className='flex justify-end gap-1'>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button variant='ghost' size='icon' className='h-8 w-8' asChild>
-                            <Link href={`/invoicing/invoices/${inv.id}`}>
-                              <Eye className='h-3.5 w-3.5' />
-                            </Link>
+            {filtered.map((inv) => {
+              const isSending = sendingId === inv.id;
+              const recipientEmail = inv.latestLog?.recipient_email ?? inv.clients?.email;
+              const isResend = inv.status === 'sent' || inv.latestLog !== null;
+
+              return (
+                <TableRow key={inv.id}>
+                  <TableCell className='font-mono text-sm font-medium'>
+                    {inv.invoice_number}
+                  </TableCell>
+                  <TableCell>{inv.clients?.name ?? '—'}</TableCell>
+                  <TableCell className='text-muted-foreground'>
+                    {format(new Date(inv.issue_date + 'T00:00:00'), 'MMM d, yyyy')}
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      className='font-mono'
+                      variant={inv.status === 'sent' ? 'default' : 'secondary'}
+                    >
+                      {inv.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className='text-right font-medium'>
+                    ${inv.total.toFixed(2)}
+                  </TableCell>
+                  <TableCell>
+                    <div className='flex items-center justify-end gap-1'>
+                      <TooltipProvider>
+                        {/* Send / Resend */}
+                        {isSending ? (
+                          <Button
+                            variant='outline'
+                            size='sm'
+                            className='h-8 px-2'
+                            disabled
+                          >
+                            <Spinner /> Sending
                           </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>View invoice</TooltipContent>
-                      </Tooltip>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button variant='ghost' size='icon' className='h-8 w-8' asChild>
-                            <Link href={`/invoicing/invoices/${inv.id}/edit`}>
-                              <Pencil className='h-3.5 w-3.5' />
-                            </Link>
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>Edit invoice</TooltipContent>
-                      </Tooltip>
-                      <AlertDialog>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
+                        ) : (
+                          <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <Button
-                                variant='ghost'
-                                size='icon'
-                                className='h-8 w-8 text-destructive hover:text-destructive'
-                                disabled={isPending}
-                              >
-                                {isPending ? (
-                                  <Spinner className='h-3.5 w-3.5' />
-                                ) : (
-                                  <Trash2 className='h-3.5 w-3.5' />
+                                variant='outline'
+                                size='sm'
+                                className={cn(
+                                  'h-8 gap-1.5 px-2 text-xs font-medium',
+                                  inv.isStale &&
+                                    `text-amber-600 hover:text-amber-700
+                                      dark:text-amber-500 dark:hover:text-amber-400`
                                 )}
+                                disabled={sendingId !== null}
+                              >
+                                <div className='relative'>
+                                  <Send className='h-3.5 w-3.5' />
+                                  {inv.isStale && (
+                                    <span
+                                      className='absolute -right-0.5 -top-0.5 h-1.5 w-1.5
+                                        rounded-full bg-amber-500'
+                                    />
+                                  )}
+                                </div>
+                                {isResend ? 'Resend' : 'Send'}
                               </Button>
                             </AlertDialogTrigger>
-                          </TooltipTrigger>
-                          <TooltipContent>Delete invoice</TooltipContent>
-                        </Tooltip>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Delete invoice?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This will permanently delete invoice{' '}
-                              <strong>{inv.invoice_number}</strong> and its email log.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => handleDelete(inv.id)}
-                              className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  {inv.isStale
+                                    ? 'Invoice edited since last send'
+                                    : isResend
+                                      ? `Resend ${inv.invoice_number}?`
+                                      : `Send ${inv.invoice_number}?`}
+                                </AlertDialogTitle>
+                                <AlertDialogDescription asChild>
+                                  <div className='space-y-3 text-sm text-muted-foreground'>
+                                    {inv.isStale && inv.latestLog && (
+                                      <div
+                                        className='rounded-md border border-amber-200
+                                          bg-amber-50 px-3 py-2 text-amber-900
+                                          dark:border-amber-800/50 dark:bg-amber-950/30
+                                          dark:text-amber-200'
+                                      >
+                                        This invoice was sent to{' '}
+                                        <strong>{inv.latestLog.recipient_email}</strong>{' '}
+                                        on{' '}
+                                        <strong>
+                                          {format(
+                                            new Date(inv.latestLog.sent_at),
+                                            'MMM d, yyyy'
+                                          )}
+                                        </strong>{' '}
+                                        but has since been edited. The client may have an
+                                        outdated version.
+                                      </div>
+                                    )}
+                                    <p>
+                                      {isResend
+                                        ? `A new PDF of ${inv.invoice_number} will be generated and emailed to ${recipientEmail}.`
+                                        : `A PDF of ${inv.invoice_number} will be generated and emailed to ${recipientEmail}.`}
+                                    </p>
+                                  </div>
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleSend(inv.id)}>
+                                  {isResend ? 'Resend' : 'Send'}
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        )}
+
+                        {/* View */}
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant='outline'
+                              size='icon'
+                              className='h-8 w-8'
+                              asChild
                             >
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </TooltipProvider>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+                              <Link href={`/invoicing/invoices/${inv.id}`}>
+                                <Eye className='h-3.5 w-3.5' />
+                              </Link>
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>View invoice</TooltipContent>
+                        </Tooltip>
+
+                        {/* Edit */}
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant='outline'
+                              size='icon'
+                              className='h-8 w-8'
+                              asChild
+                            >
+                              <Link href={`/invoicing/invoices/${inv.id}/edit`}>
+                                <Pencil className='h-3.5 w-3.5' />
+                              </Link>
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>Edit invoice</TooltipContent>
+                        </Tooltip>
+
+                        {/* Delete */}
+                        <AlertDialog>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  variant='outline'
+                                  size='icon'
+                                  className='h-8 w-8 text-destructive
+                                    hover:text-destructive'
+                                  disabled={isPending}
+                                >
+                                  {isPending ? (
+                                    <Spinner className='h-3.5 w-3.5' />
+                                  ) : (
+                                    <Trash2 className='h-3.5 w-3.5' />
+                                  )}
+                                </Button>
+                              </AlertDialogTrigger>
+                            </TooltipTrigger>
+                            <TooltipContent>Delete invoice</TooltipContent>
+                          </Tooltip>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete invoice?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This will permanently delete invoice{' '}
+                                <strong>{inv.invoice_number}</strong> and its email log.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDelete(inv.id)}
+                                className='bg-destructive text-destructive-foreground
+                                  hover:bg-destructive/90'
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </TooltipProvider>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>

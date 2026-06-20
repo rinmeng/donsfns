@@ -3,13 +3,8 @@ import { ChevronLeft, Info, Pencil } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import type {
-  Client,
-  Invoice,
-  InvoiceEmailLog,
-  InvoiceSnapshot,
-  LineItem,
-} from '@/types/database';
+import type { Client, Invoice, InvoiceEmailLog, InvoiceSnapshot } from '@/types/database';
+import { computeIsStale } from '@/lib/invoicing/is-stale';
 import { SentHistory } from '@/components/invoicing/SentHistory';
 import { SendInvoiceButton } from '@/components/invoicing/SendInvoiceButton';
 import { Text } from '@/components/Text';
@@ -46,29 +41,7 @@ export default async function InvoiceDetailPage({
     ? (latestLog.snapshot as unknown as InvoiceSnapshot)
     : null;
 
-  const isStale = (() => {
-    if (invoice.status !== 'sent' || !latestSnapshot) return false;
-    const cents = (n: number) => Math.round(n * 100);
-    const serializeItems = (items: LineItem[]) =>
-      JSON.stringify(
-        items.map((li) => ({
-          description: li.description.trim(),
-          quantity: li.quantity,
-          rate: cents(li.rate),
-          amount: cents(li.amount),
-        }))
-      );
-    return (
-      cents(invoice.subtotal) !== cents(latestSnapshot.subtotal) ||
-      cents(invoice.tax_amount) !== cents(latestSnapshot.tax_amount) ||
-      cents(invoice.total) !== cents(latestSnapshot.total) ||
-      invoice.tax_rate !== latestSnapshot.tax_rate ||
-      invoice.issue_date !== latestSnapshot.issue_date ||
-      (invoice.notes ?? '') !== (latestSnapshot.notes ?? '') ||
-      client.email !== latestSnapshot.client.email ||
-      serializeItems(invoice.line_items) !== serializeItems(latestSnapshot.line_items)
-    );
-  })();
+  const isStale = computeIsStale(invoice, latestSnapshot);
 
   return (
     <div className='space-y-4'>
@@ -88,10 +61,11 @@ export default async function InvoiceDetailPage({
           <Info className='mt-0.5 h-4 w-4 shrink-0' />
           <span>
             This invoice was sent to <strong>{latestLog.recipient_email}</strong> on{' '}
-            <strong>{formatDate(new Date(latestLog.sent_at), 'MMM d, yyyy')}</strong> at{' '}
-            <strong>{formatDate(new Date(latestLog.sent_at), 'h:mm a')}</strong>, but it's
-            changed since then. The client may have an outdated version — resend to update
-            them.
+            <strong>
+              {formatDate(new Date(latestLog.sent_at), "MMM d, yyyy 'at' h:mm a")}
+            </strong>
+            , and has changed since then. The client may have an outdated version — resend
+            to update them.
           </span>
         </div>
       )}
