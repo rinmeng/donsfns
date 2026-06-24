@@ -1,6 +1,6 @@
 ﻿'use client';
 
-import { Pencil, Plus, Trash2, X } from 'lucide-react';
+import { Pencil, Plus, Search, Trash2, X } from 'lucide-react';
 import { useMemo, useState, useTransition } from 'react';
 
 import { useRouter } from 'next/navigation';
@@ -18,7 +18,6 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -109,9 +108,18 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
   return (
     <>
       <div className='space-y-4'>
-        <div className='flex items-center gap-2'>
+        {/* Search bar */}
+        <div
+          className='flex items-center gap-2 rounded-lg border bg-background px-3 py-2
+            shadow-sm'
+        >
+          <Search className='h-4 w-4 shrink-0 text-muted-foreground' />
+
           <Select value={searchBy} onValueChange={handleSearchByChange}>
-            <SelectTrigger className='w-32'>
+            <SelectTrigger
+              className='h-auto w-auto min-w-20 border-0 p-0 text-sm font-medium
+                shadow-none focus:ring-0 focus-visible:ring-0'
+            >
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -121,30 +129,33 @@ export function ClientsTable({ clients }: { clients: Client[] }) {
             </SelectContent>
           </Select>
 
-          <div className='relative flex-1'>
-            <Input
-              placeholder={
-                searchBy === 'name'
-                  ? 'Search by name…'
-                  : searchBy === 'email'
-                    ? 'Search by email…'
-                    : 'Search by phone…'
-              }
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-            />
-            {hasSearch && (
-              <Button
-                variant='ghost'
-                size='icon'
-                className='absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2
-                  text-muted-foreground hover:text-foreground'
-                onClick={clearSearch}
-              >
-                <X className='h-3.5 w-3.5' />
-              </Button>
-            )}
-          </div>
+          <div className='h-4 w-px shrink-0 bg-border' />
+
+          <input
+            className='flex-1 bg-transparent text-sm outline-none
+              placeholder:text-muted-foreground/50'
+            placeholder={
+              searchBy === 'name'
+                ? 'Search by name…'
+                : searchBy === 'email'
+                  ? 'Search by email…'
+                  : 'Search by phone…'
+            }
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+
+          {hasSearch && (
+            <Button
+              variant='ghost'
+              size='icon'
+              className='ml-auto h-7 w-7 shrink-0 text-muted-foreground
+                hover:text-foreground'
+              onClick={clearSearch}
+            >
+              <X className='h-3.5 w-3.5' />
+            </Button>
+          )}
         </div>
 
         <div className='flex items-center justify-between'>

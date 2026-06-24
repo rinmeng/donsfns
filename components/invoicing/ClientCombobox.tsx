@@ -46,7 +46,7 @@ export function ClientCombobox({ clients, value, onChange }: Props) {
           variant='outline'
           role='combobox'
           aria-expanded={open}
-          className='w-full justify-between font-normal'
+          className='w-full cursor-pointer justify-between font-normal'
         >
           {selected ? (
             selected.name
@@ -62,6 +62,7 @@ export function ClientCombobox({ clients, value, onChange }: Props) {
             placeholder='Search clients…'
             value={query}
             onValueChange={setQuery}
+            autoFocus={false}
           />
           <CommandList>
             <CommandEmpty>No clients found.</CommandEmpty>
