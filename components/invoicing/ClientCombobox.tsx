@@ -62,7 +62,6 @@ export function ClientCombobox({ clients, value, onChange }: Props) {
             placeholder='Search clients…'
             value={query}
             onValueChange={setQuery}
-            autoFocus={false}
           />
           <CommandList>
             <CommandEmpty>No clients found.</CommandEmpty>
